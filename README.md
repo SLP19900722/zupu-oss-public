@@ -28,34 +28,91 @@
 
 ![商务咨询微信二维码](docs/showcase/wechat-contact.png)
 
+## 演示展示
 
-![社区版封面](docs/showcase/demo-cover.png)
+下面按“进入系统 -> 首页 -> 树谱 -> 详情 -> 通知”的顺序展示核心页面，方便第一次看到仓库的人快速理解这个项目能做什么。
 
-![登录页与迁徙脉络](docs/showcase/01-login-timeline.png)
-登录页可以先展示家族迁徙故事，再引导用户进入族谱系统。
+### 封面预览
 
-![首页影像展示](docs/showcase/02-home-gallery.png)
-首页不仅能看成员，也能承接家族影像和活动记录。
+<p align="center">
+  <img src="docs/showcase/demo-cover.png" alt="社区版封面" width="420">
+</p>
 
-![家族树主视图](docs/showcase/03-family-tree.png)
-家族树适合快速展示世代关系、主干分支和配偶结构。
+适合放在仓库首屏、Release 封面或转发介绍里，先把整体风格和完成度展示出来。
 
-![成员详情页](docs/showcase/04-member-detail.png)
-成员详情页可以承接职业、地址、简介等长期资料。
+### 1. 登录页与家族迁徙脉络
 
-![通知历史页](docs/showcase/05-notification-history.png)
-通知历史页可用于展示家族公告、祭祀安排和活动提醒。
+- 先展示家族迁徙故事，再引导用户进入系统
+- 适合体现“族谱不仅是数据管理，也是家族文化入口”
 
-### 补充截图
+<p align="center">
+  <img src="docs/showcase/01-login-timeline.png" alt="登录页与迁徙脉络" width="360">
+</p>
 
-![首次登录选择本人](docs/showcase/06-select-self.png)
-首次登录时，可以先完成“我是本人 / 配偶”等身份入口选择。
+### 2. 首页影像展示
 
-![成员名录总览](docs/showcase/07-member-directory-overview.png)
-成员名录总览页适合展示名录规模、搜索入口和列表结构。
+- 首页不仅能看成员，也能承接家族影像和活动记录
+- 更适合向非技术用户说明“小程序不是只有一棵树”
 
-![成员名录列表](docs/showcase/08-member-directory-list.png)
-成员列表页适合展示世代、职业、现居地等信息的浏览体验。
+<p align="center">
+  <img src="docs/showcase/02-home-gallery.png" alt="首页影像展示" width="360">
+</p>
+
+### 3. 家族树主视图
+
+- 适合快速展示世代关系、主干分支和配偶结构
+- 是最能体现“族谱产品价值”的核心页面之一
+
+<p align="center">
+  <img src="docs/showcase/03-family-tree.png" alt="家族树主视图" width="360">
+</p>
+
+### 4. 成员详情页
+
+- 成员详情页可以承接职业、地址、简介等长期资料
+- 适合说明“每个成员不仅有名字，还有可沉淀的信息”
+
+<p align="center">
+  <img src="docs/showcase/04-member-detail.png" alt="成员详情页" width="360">
+</p>
+
+### 5. 通知历史页
+
+- 可用于展示家族公告、祭祀安排和活动提醒
+- 更容易向潜在客户说明这个系统不仅能展示，还能承接管理动作
+
+<p align="center">
+  <img src="docs/showcase/05-notification-history.png" alt="通知历史页" width="360">
+</p>
+
+<details>
+<summary>查看更多页面截图</summary>
+
+### 首次登录选择本人
+
+- 首次登录时，可以先完成“我是本人 / 配偶”等身份入口选择
+
+<p align="center">
+  <img src="docs/showcase/06-select-self.png" alt="首次登录选择本人" width="360">
+</p>
+
+### 成员名录总览
+
+- 适合展示名录规模、搜索入口和列表结构
+
+<p align="center">
+  <img src="docs/showcase/07-member-directory-overview.png" alt="成员名录总览" width="360">
+</p>
+
+### 成员名录列表
+
+- 适合展示世代、职业、现居地等信息的浏览体验
+
+<p align="center">
+  <img src="docs/showcase/08-member-directory-list.png" alt="成员名录列表" width="360">
+</p>
+
+</details>
 
 更多截图建议和录屏脚本见 [docs/SHOWCASE.md](docs/SHOWCASE.md)。
 
