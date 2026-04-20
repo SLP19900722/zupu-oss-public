@@ -68,11 +68,41 @@
 - 鼠标或手势尽量慢，不要连续快速点击
 - 每次页面切换后停 1 秒，方便观众辨认信息
 
-## 3. README Snippet
+## 3. Upload Video To GitHub Releases
+
+如果你希望“视频也在 GitHub 上”，最推荐的方式就是上传到当前仓库的 Release 附件。
+
+建议文件名固定为：
+
+- `family-tree-community-demo.mp4`
+
+建议发布节奏：
+
+1. 在 GitHub 仓库创建一个 Release，例如 `v0.1.0`
+2. 把视频作为附件上传到这个 Release
+3. 复制附件地址，格式通常类似：
+
+```text
+https://github.com/<your-user>/<your-repo>/releases/download/v0.1.0/family-tree-community-demo.mp4
+```
+
+4. 把 README 里的占位链接替换成这个地址
+
+这样做的好处是：
+
+- 视频不进入源码仓库历史
+- README 可以直接点封面跳视频
+- 后面更新视频时只需要重新发一个 Release 或替换链接
+
+## 4. README Snippet
 
 等你把截图放进 `docs/showcase/` 后，可以把下面这段直接贴到 README 的 `Demo Showcase` 小节下面：
 
 ```md
+[![Watch the demo video](docs/showcase/demo-cover.png)](https://github.com/<your-user>/<your-repo>/releases/download/v0.1.0/family-tree-community-demo.mp4)
+
+Demo video: [Watch the 90-second walkthrough](https://github.com/<your-user>/<your-repo>/releases/download/v0.1.0/family-tree-community-demo.mp4)
+
 ![登录页与迁徙时间线](docs/showcase/01-login-timeline.png)
 登录页先展示家族迁徙故事，让用户先理解“家从哪里来”。
 
@@ -89,7 +119,7 @@
 通知历史页用于展示家族活动提醒和历史记录。
 ```
 
-## 4. Where To Use These Assets
+## 5. Where To Use These Assets
 
 这套素材可以一稿多用：
 

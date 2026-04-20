@@ -34,6 +34,22 @@
 - `docs/showcase/05-notification-history.png`
 - `docs/showcase/demo-cover.png`
 
+如果你准备把视频放到 GitHub Release，建议资源文件名统一用：
+
+- `family-tree-community-demo.mp4`
+
+视频上传到 Release 之后，把下面这两个占位链接里的 URL 替换成你的 Release 附件地址：
+
+```md
+[![Watch the demo video](docs/showcase/demo-cover.png)](https://github.com/<your-user>/<your-repo>/releases/download/v0.1.0/family-tree-community-demo.mp4)
+
+Demo video: [Watch the 90-second walkthrough](https://github.com/<your-user>/<your-repo>/releases/download/v0.1.0/family-tree-community-demo.mp4)
+```
+
+[![Watch the demo video](docs/showcase/demo-cover.png)](https://github.com/<your-user>/<your-repo>/releases/download/v0.1.0/family-tree-community-demo.mp4)
+
+Demo video: [Watch the 90-second walkthrough](https://github.com/<your-user>/<your-repo>/releases/download/v0.1.0/family-tree-community-demo.mp4)
+
 当前仓库已经放了 6 张可直接显示的占位图。你后面只需要用真实截图覆盖同名文件，README 就会自动替换成正式展示图。
 
 ![Community Edition Cover](docs/showcase/demo-cover.png)
@@ -53,7 +69,7 @@
 ![通知历史页](docs/showcase/05-notification-history.png)
 通知历史页用于展示家族活动提醒和历史记录。
 
-截图要点、60 到 90 秒演示视频脚本、README 可直接复用的图片文案模板见 [docs/SHOWCASE.md](docs/SHOWCASE.md)。
+截图要点、60 到 90 秒演示视频脚本、GitHub Release 上传方式、README 可直接复用的图片文案模板见 [docs/SHOWCASE.md](docs/SHOWCASE.md)。
 
 ## Project Layout
 
