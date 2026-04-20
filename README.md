@@ -1,32 +1,37 @@
-# Family Tree Community Edition
+# 族谱小程序社区版
 
-A single-tenant family genealogy mini program community edition.
+一个面向中国家族谱系场景的单租户族谱小程序社区版。
 
-This repository is meant for:
+这个仓库主要用于：
 
-- local showcase playback with fully fictional demo data
-- GitHub screenshots and short demo videos
-- technical evaluation before commercial authorization or private deployment
+- 展示一个可运行的族谱小程序基础版本
+- 提供完整的虚构演示数据，方便本地复现界面效果
+- 作为商业授权、私有化部署、定制开发前的技术演示入口
 
-This repository is not meant to ship production credentials, multi-tenant features, or private import tooling.
+这个仓库**不包含**生产环境凭据、多租户能力、私有导谱工具和商业交付脚本。
 
-## Important Notes
+## 说明
 
-- All members, places, migration records, notifications, and gallery items in this repository are fictional showcase data.
-- The first public release focuses on front-end showcase pages. Real WeChat login, real COS upload, and admin operations require your own configuration.
-- Commercial use, private deployment, customization, and multi-tenant editions are outside the community edition boundary.
+- 仓库中的成员、地名、迁徙记录、通知和图片均为**虚构演示数据**
+- 当前公开版本重点展示前台界面效果
+- 微信登录、COS 上传、管理员后台等能力需要你自行补充配置
+- 商业授权、私有化部署、定制开发不属于社区版默认能力
 
-## Demo Showcase
+当前演示主题使用的是一套虚构数据：
 
-Recommended assets for the repository homepage:
+- 家族主题：`云川沈氏·澄源堂`
 
-1. login page with migration timeline
-2. home gallery carousel
-3. family tree main view
-4. member detail page
-5. notification history page
+## 演示展示
 
-Place your assets in `docs/showcase/` with these filenames:
+建议在仓库首页展示这几类核心页面：
+
+1. 登录页与迁徙脉络
+2. 首页影像展示
+3. 家族树主视图
+4. 成员详情页
+5. 通知历史页
+
+截图文件建议放在 `docs/showcase/` 目录，使用这些文件名：
 
 - `docs/showcase/demo-cover.png`
 - `docs/showcase/01-login-timeline.png`
@@ -35,133 +40,133 @@ Place your assets in `docs/showcase/` with these filenames:
 - `docs/showcase/04-member-detail.png`
 - `docs/showcase/05-notification-history.png`
 
-If you upload the demo video to GitHub Releases, use a stable filename such as:
+如果你把演示视频上传到 GitHub Releases，建议统一文件名：
 
 - `family-tree-community-demo.mp4`
 
-Replace the placeholder URL below with your real Release asset URL:
+把下面这两个占位链接替换成你自己的 Release 附件地址即可：
 
 ```md
-[![Watch the demo video](docs/showcase/demo-cover.png)](https://github.com/<your-user>/<your-repo>/releases/download/v0.1.0/family-tree-community-demo.mp4)
+[![观看演示视频](docs/showcase/demo-cover.png)](https://github.com/<你的用户名>/<你的仓库>/releases/download/v0.1.0/family-tree-community-demo.mp4)
 
-Demo video: [Watch the 90-second walkthrough](https://github.com/<your-user>/<your-repo>/releases/download/v0.1.0/family-tree-community-demo.mp4)
+演示视频：[点击观看 90 秒演示](https://github.com/<你的用户名>/<你的仓库>/releases/download/v0.1.0/family-tree-community-demo.mp4)
 ```
 
-[![Watch the demo video](docs/showcase/demo-cover.png)](https://github.com/<your-user>/<your-repo>/releases/download/v0.1.0/family-tree-community-demo.mp4)
+[![观看演示视频](docs/showcase/demo-cover.png)](https://github.com/<你的用户名>/<你的仓库>/releases/download/v0.1.0/family-tree-community-demo.mp4)
 
-Demo video: [Watch the 90-second walkthrough](https://github.com/<your-user>/<your-repo>/releases/download/v0.1.0/family-tree-community-demo.mp4)
+演示视频：[点击观看 90 秒演示](https://github.com/<你的用户名>/<你的仓库>/releases/download/v0.1.0/family-tree-community-demo.mp4)
 
-![Community Edition Cover](docs/showcase/demo-cover.png)
+![社区版封面](docs/showcase/demo-cover.png)
 
-![Login And Migration Timeline](docs/showcase/01-login-timeline.png)
-The login flow can introduce the family migration story before the user enters the tree.
+![登录页与迁徙脉络](docs/showcase/01-login-timeline.png)
+登录页可以先展示家族迁徙故事，再引导用户进入族谱系统。
 
-![Home Gallery Carousel](docs/showcase/02-home-gallery.png)
-The home page can carry family imagery and event memory, not just a member list entry point.
+![首页影像展示](docs/showcase/02-home-gallery.png)
+首页不仅能看成员，也能承接家族影像和活动记录。
 
-![Family Tree Main View](docs/showcase/03-family-tree.png)
-The tree view is the fastest way to show generation structure and spouse relationships.
+![家族树主视图](docs/showcase/03-family-tree.png)
+家族树适合快速展示世代关系、主干分支和配偶结构。
 
-![Member Detail Page](docs/showcase/04-member-detail.png)
-The member detail page supports richer profile data such as occupation, address, and biography.
+![成员详情页](docs/showcase/04-member-detail.png)
+成员详情页可以承接职业、地址、简介等长期资料。
 
-![Notification History Page](docs/showcase/05-notification-history.png)
-The notification history page shows family reminders and activity records.
+![通知历史页](docs/showcase/05-notification-history.png)
+通知历史页可用于展示家族公告、祭祀安排和活动提醒。
 
-### Additional Screens
+### 补充截图
 
-![First Login Identity Selection](docs/showcase/06-select-self.png)
-The first login flow helps a newcomer choose "who am I" before binding to the family tree.
+![首次登录选择本人](docs/showcase/06-select-self.png)
+首次登录时，可以先完成“我是本人 / 配偶”等身份入口选择。
 
-![Member Directory Overview](docs/showcase/07-member-directory-overview.png)
-The member directory overview gives a clean searchable entry point into the showcase dataset.
+![成员名录总览](docs/showcase/07-member-directory-overview.png)
+成员名录总览页适合展示名录规模、搜索入口和列表结构。
 
-![Member Directory List](docs/showcase/08-member-directory-list.png)
-The scrolling member list makes the generation, occupation, and current city easy to scan in one pass.
+![成员名录列表](docs/showcase/08-member-directory-list.png)
+成员列表页适合展示世代、职业、现居地等信息的浏览体验。
 
-For the full screenshot checklist and a short recording script, see [docs/SHOWCASE.md](docs/SHOWCASE.md).
+更多截图建议和录屏脚本见 [docs/SHOWCASE.md](docs/SHOWCASE.md)。
 
-## Project Layout
+## 项目结构
 
-- `backend/`: Spring Boot backend
-- `miniprogram/`: WeChat mini program frontend
-- `backend/src/main/resources/sql/schema_showcase.sql`: showcase database schema
-- `backend/src/main/resources/sql/seed_showcase.sql`: fictional showcase seed data
-- `docs/SETUP.md`: local startup instructions
-- `docs/SHOWCASE.md`: screenshot and demo video guide
-- `docs/RECORDING_SCRIPT.md`: compact recording checklist
+- `backend/`：Spring Boot 后端
+- `miniprogram/`：微信小程序前端
+- `backend/src/main/resources/sql/schema_showcase.sql`：演示库结构
+- `backend/src/main/resources/sql/seed_showcase.sql`：演示库虚构种子数据
+- `docs/SETUP.md`：本地启动说明
+- `docs/SHOWCASE.md`：截图与录屏说明
+- `docs/RECORDING_SCRIPT.md`：简版录屏顺序
 
-## Quick Start
+## 快速开始
 
-1. Prepare a MySQL 8.x database.
-2. Import [schema_showcase.sql](backend/src/main/resources/sql/schema_showcase.sql).
-3. Import [seed_showcase.sql](backend/src/main/resources/sql/seed_showcase.sql).
-4. Start the backend from `backend/`.
-5. Open `miniprogram/` in WeChat DevTools.
+1. 准备一个 MySQL 8.x 数据库
+2. 导入 [schema_showcase.sql](backend/src/main/resources/sql/schema_showcase.sql)
+3. 导入 [seed_showcase.sql](backend/src/main/resources/sql/seed_showcase.sql)
+4. 在 `backend/` 目录启动后端
+5. 用微信开发者工具打开 `miniprogram/`
 
-More detail is available in [docs/SETUP.md](docs/SETUP.md).
+详细步骤见 [docs/SETUP.md](docs/SETUP.md)。
 
-## Run Profiles
+## 运行方式
 
-The repository now separates safe public defaults from your private remote recording setup:
+为了兼顾公开安全和本地演示，仓库区分了两类配置：
 
-- `backend/src/main/resources/application.yml`: shared baseline and placeholders
-- `backend/src/main/resources/application-local.yml`: local showcase defaults, loaded by default
-- `backend/src/main/resources/application-remote.yml.example`: template for your own remote recording setup
+- `backend/src/main/resources/application.yml`：公共基线配置
+- `backend/src/main/resources/application-local.yml`：本地演示默认配置
+- `backend/src/main/resources/application-remote.yml.example`：远程演示配置模板
 
-### Local showcase run
+### 本地演示
 
-Use this for GitHub screenshots and most demo videos:
+适合本地截图、录屏和 GitHub 展示：
 
 ```powershell
 cd backend
 mvn spring-boot:run
 ```
 
-### Remote recording run
+### 远程演示
 
-If you want to keep the public code unchanged but point the backend at your own remote demo database:
+如果你希望代码保持公开仓库默认状态，但后端连接到你自己的远程演示库：
 
 ```powershell
 cd backend
 Copy-Item src\main\resources\application-remote.yml.example src\main\resources\application-remote.yml
 ```
 
-Then edit `application-remote.yml` locally and start with:
+补充好本地私有配置后，再执行：
 
 ```powershell
 mvn spring-boot:run -Dspring-boot.run.profiles=remote
 ```
 
-`application-remote.yml` is ignored by Git, so your remote host and credentials will not be committed into the public repository.
+`application-remote.yml` 已被 Git 忽略，不会进入公开仓库。
 
-## Community Edition Boundary
+## 社区版边界
 
-Included:
+社区版包含：
 
-- family tree browsing
-- member list and member detail pages
-- home gallery showcase
-- migration timeline
-- notification history
-- complete fictional showcase SQL
+- 家族树浏览
+- 成员列表与详情
+- 首页影像展示
+- 迁徙时间线
+- 通知历史
+- 完整虚构演示 SQL
 
-Not included:
+社区版不包含：
 
-- multi-tenant capabilities
-- real production credentials
-- operations scripts
-- private import scripts
-- real family records
+- 多租户能力
+- 生产环境真实配置
+- 运维脚本
+- 私有导谱脚本
+- 真实家族资料
 
-Placeholder-only by default:
+默认仅保留占位配置的项目：
 
-- WeChat mini program config
-- COS config
-- mail config
-- subscription template config
-- JWT secret
+- 微信小程序配置
+- COS 配置
+- 邮件配置
+- 订阅消息模板配置
+- JWT 密钥
 
-## License
+## 许可说明
 
-This repository uses a custom community-edition license. See [LICENSE](LICENSE).
+本仓库使用自定义社区版许可证，详见 [LICENSE](LICENSE)。

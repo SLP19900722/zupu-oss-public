@@ -1,10 +1,14 @@
-# Demo Showcase Guide
+# 展示素材说明
 
-This document is for repository screenshots, short demo videos, and social sharing assets. The goal is not to explain every feature. The goal is to let people understand in about 10 seconds that the project already works.
+这份文档用于整理仓库首页截图、演示视频和对外传播素材。目标不是把所有功能都讲全，而是让别人快速看懂：
 
-## 1. Screenshot Checklist
+- 这个项目已经做出来了
+- 这个项目适合族谱/家族场景
+- 这个项目可以继续做商业化交付
 
-Prepare these 5 screenshots in this order:
+## 1. 截图建议顺序
+
+建议优先展示这 5 张核心截图：
 
 1. `docs/showcase/01-login-timeline.png`
 2. `docs/showcase/02-home-gallery.png`
@@ -12,97 +16,108 @@ Prepare these 5 screenshots in this order:
 4. `docs/showcase/04-member-detail.png`
 5. `docs/showcase/05-notification-history.png`
 
-Recommended framing:
+补充截图可放：
 
-- use the WeChat DevTools phone emulator in portrait mode
-- keep each screen data-rich and free of debug panels
-- keep the same visual theme across all screenshots
+- `docs/showcase/06-select-self.png`
+- `docs/showcase/07-member-directory-overview.png`
+- `docs/showcase/08-member-directory-list.png`
 
-Suggested captions:
+截图建议：
 
-- login timeline: introduce the family migration story before entering the tree
-- home gallery: the product carries family imagery and memory, not only member records
-- family tree: generation structure and spouse relations are clear at a glance
-- member detail: profiles can hold occupation, address, biography, and other long-lived data
-- notification history: the mini program can retain family reminder and event records
+- 使用微信开发者工具手机模拟器竖屏截图
+- 保持页面上有真实演示数据，不要截到调试面板
+- 风格统一，不要混入不同主题或不同品牌状态
 
-## 2. Short Video Script
+## 2. 每张图建议表达什么
 
-Recommended length: 60 to 90 seconds.
+- 登录页与迁徙脉络：先讲家族来处，再进入系统
+- 首页影像展示：不只是成员管理，也能承接家族影像与活动记忆
+- 家族树：直观体现世代关系与谱系结构
+- 成员详情：适合承接职业、地址、简介等长期资料
+- 通知历史：适合展示家族公告、祭祀安排、活动提醒
+- 首次登录选本人：体现认领/绑定流程
+- 成员名录总览：体现名录规模和搜索能力
+- 成员名录列表：体现浏览体验和信息密度
 
-Suggested order:
+## 3. 演示视频建议脚本
 
-1. `0s - 8s`: open the login page and slowly scroll the migration timeline
-2. `8s - 18s`: enter the home page and pause on the gallery carousel
-3. `18s - 35s`: open the family tree and do one slow drag or zoom
-4. `35s - 50s`: open a rich member detail page and pause on the bio area
-5. `50s - 65s`: open notification history
-6. `65s - 80s`: end on the home page or family tree cover frame
+建议时长：
 
-Recording tips:
+- `60 ~ 90 秒`
 
-- make sure the first 3 seconds already show a visual highlight
-- keep pointer or gestures slow and deliberate
-- pause briefly after each page transition
+建议顺序：
 
-If you want to record against your own remote demo database without changing the public defaults, copy `backend/src/main/resources/application-remote.yml.example` to `application-remote.yml`, fill in your remote values locally, and run:
+1. `0s - 8s`：打开登录页，慢慢滑一下迁徙脉络
+2. `8s - 18s`：进入首页，停在影像展示窗
+3. `18s - 35s`：进入家族树，做一次慢速拖动或缩放
+4. `35s - 50s`：打开成员详情页，停在资料区域
+5. `50s - 65s`：打开通知历史页
+6. `65s - 80s`：回到首页或家族树作为结束画面
+
+录屏建议：
+
+- 前 3 秒一定要有视觉亮点
+- 手势或鼠标动作放慢一些
+- 每切一次页面，停 1 秒给观众看清楚
+
+如果你想用自己的远程演示库录屏，但又不想改公开仓库默认配置，可以在本地创建 `application-remote.yml`，再执行：
 
 ```powershell
 mvn spring-boot:run -Dspring-boot.run.profiles=remote
 ```
 
-## 3. Upload Video To GitHub Releases
+## 4. 视频放在哪里
 
-If you want the video to live on GitHub, the recommended place is a Release asset.
+如果你希望视频也放在 GitHub 上，最适合的是放到当前仓库的 Release 附件里。
 
-Suggested filename:
+建议文件名：
 
 - `family-tree-community-demo.mp4`
 
-Suggested flow:
+建议流程：
 
-1. Create a Release such as `v0.1.0`.
-2. Upload the video file as a Release asset.
-3. Copy the asset URL. It will usually look like:
+1. 创建一个 Release，例如 `v0.1.0`
+2. 把视频作为 Release 附件上传
+3. 复制视频附件地址，通常格式如下：
 
 ```text
-https://github.com/<your-user>/<your-repo>/releases/download/v0.1.0/family-tree-community-demo.mp4
+https://github.com/<你的用户名>/<你的仓库>/releases/download/v0.1.0/family-tree-community-demo.mp4
 ```
 
-4. Replace the placeholder video URL in `README.md`.
+4. 回到 `README.md`，替换掉占位视频链接
 
-Benefits:
+这么做的好处：
 
-- the video does not bloat source history
-- the README can link directly to the video through the cover image
-- later video updates only require a new Release asset or link update
+- 不会把大视频塞进 Git 历史
+- README 可以直接点击封面图跳转到视频
+- 后面更新视频也更方便
 
-## 4. README Snippet
+## 5. README 可直接复用的展示片段
 
-Use this block inside the `Demo Showcase` section of `README.md`:
+你可以把下面这段直接放进 `README.md` 的“演示展示”部分：
 
 ```md
-[![Watch the demo video](docs/showcase/demo-cover.png)](https://github.com/<your-user>/<your-repo>/releases/download/v0.1.0/family-tree-community-demo.mp4)
+[![观看演示视频](docs/showcase/demo-cover.png)](https://github.com/<你的用户名>/<你的仓库>/releases/download/v0.1.0/family-tree-community-demo.mp4)
 
-Demo video: [Watch the 90-second walkthrough](https://github.com/<your-user>/<your-repo>/releases/download/v0.1.0/family-tree-community-demo.mp4)
+演示视频：[点击观看 90 秒演示](https://github.com/<你的用户名>/<你的仓库>/releases/download/v0.1.0/family-tree-community-demo.mp4)
 
-![Login And Migration Timeline](docs/showcase/01-login-timeline.png)
-The login flow can introduce the family migration story before the user enters the tree.
-![Home Gallery Carousel](docs/showcase/02-home-gallery.png)
-The home page can carry family imagery and event memory, not just a member list entry point.
-![Family Tree Main View](docs/showcase/03-family-tree.png)
-The tree view is the fastest way to show generation structure and spouse relationships.
-![Member Detail Page](docs/showcase/04-member-detail.png)
-The member detail page supports richer profile data such as occupation, address, and biography.
-![Notification History Page](docs/showcase/05-notification-history.png)
-The notification history page shows family reminders and activity records.
+![登录页与迁徙脉络](docs/showcase/01-login-timeline.png)
+登录页可以先展示家族迁徙故事，再引导用户进入族谱系统。
+![首页影像展示](docs/showcase/02-home-gallery.png)
+首页不仅能看成员，也能承接家族影像和活动记录。
+![家族树主视图](docs/showcase/03-family-tree.png)
+家族树适合快速展示世代关系、主干分支和配偶结构。
+![成员详情页](docs/showcase/04-member-detail.png)
+成员详情页可以承接职业、地址、简介等长期资料。
+![通知历史页](docs/showcase/05-notification-history.png)
+通知历史页可用于展示家族公告、祭祀安排和活动提醒。
 ```
 
-## 5. Where To Use These Assets
+## 6. 这些素材还能用在哪
 
-You can reuse the same materials across channels:
+同一套素材可以重复利用：
 
-- GitHub README: all 5 screenshots
-- Bilibili or short-video platforms: the 60 to 90 second demo video
-- WeChat posts or Moments: the cover image plus 3 core screenshots
-- direct customer conversations: the video plus `03-family-tree.png`
+- GitHub README：完整 5~8 张截图
+- B 站 / 视频号 / 抖音：60~90 秒演示视频
+- 公众号 / 朋友圈：封面图 + 3 张核心截图
+- 私聊潜在客户：视频 + 家族树主视图 + 成员详情页
