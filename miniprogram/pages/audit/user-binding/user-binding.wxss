@@ -1,0 +1,283 @@
+.binding-page {
+  min-height: 100vh;
+  padding: 28rpx 28rpx 48rpx;
+  background:
+    radial-gradient(circle at top, rgba(199, 154, 71, 0.16), transparent 30%),
+    linear-gradient(180deg, #f6eee2 0%, #f4eadf 52%, #fbf7f1 100%);
+}
+
+.hero-card,
+.panel-card,
+.candidate-card,
+.empty-card,
+.loading-card {
+  border-radius: 30rpx;
+  border: 1rpx solid rgba(172, 96, 68, 0.12);
+  box-shadow: 0 18rpx 42rpx rgba(79, 50, 32, 0.08);
+}
+
+.hero-card {
+  padding: 34rpx 30rpx;
+  background: linear-gradient(135deg, #8f1f1f 0%, #bc5640 58%, #c79a47 100%);
+}
+
+.hero-kicker,
+.hero-title,
+.hero-desc,
+.hero-summary,
+.hero-btn-text {
+  color: #fff8f0;
+}
+
+.hero-kicker {
+  display: block;
+  font-size: 20rpx;
+  letter-spacing: 5rpx;
+  color: rgba(255, 244, 230, 0.84);
+}
+
+.hero-title {
+  display: block;
+  margin-top: 12rpx;
+  font-size: 42rpx;
+  font-weight: 700;
+}
+
+.hero-desc {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 24rpx;
+}
+
+.hero-summary {
+  display: block;
+  margin-top: 18rpx;
+  font-size: 26rpx;
+  line-height: 1.7;
+}
+
+.hero-actions {
+  display: flex;
+  margin-top: 24rpx;
+}
+
+.hero-btn {
+  min-width: 144rpx;
+  height: 64rpx;
+  padding: 0 24rpx;
+  border-radius: 999rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-btn + .hero-btn {
+  margin-left: 16rpx;
+}
+
+.hero-btn.ghost {
+  background: rgba(255, 248, 240, 0.14);
+}
+
+.hero-btn.danger {
+  background: rgba(63, 16, 16, 0.22);
+}
+
+.hero-btn-text {
+  font-size: 22rpx;
+  font-weight: 700;
+}
+
+.hero-btn-text.ghost-text {
+  color: #fff4e6;
+}
+
+.panel-card {
+  margin-top: 24rpx;
+  padding: 28rpx;
+  background: rgba(255, 252, 247, 0.96);
+}
+
+.panel-title {
+  display: block;
+  color: #2f241b;
+  font-size: 34rpx;
+  font-weight: 700;
+  font-family: "Songti SC", "STSong", "PingFang SC", serif;
+}
+
+.panel-desc {
+  display: block;
+  margin-top: 10rpx;
+  color: #8a7769;
+  font-size: 24rpx;
+  line-height: 1.7;
+}
+
+.search-shell {
+  display: flex;
+  align-items: center;
+  min-height: 82rpx;
+  margin-top: 24rpx;
+  padding: 0 18rpx 0 24rpx;
+  border-radius: 24rpx;
+  background: rgba(250, 244, 236, 0.95);
+  border: 1rpx solid rgba(172, 96, 68, 0.1);
+}
+
+.search-input {
+  flex: 1;
+  min-width: 0;
+  height: 82rpx;
+  color: #2f241b;
+  font-size: 24rpx;
+}
+
+.search-placeholder {
+  color: #ab9889;
+}
+
+.search-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 58rpx;
+  padding: 0 22rpx;
+  border-radius: 999rpx;
+  background: rgba(143, 31, 31, 0.08);
+}
+
+.search-clear-text {
+  color: #8f1f1f;
+  font-size: 22rpx;
+  font-weight: 700;
+}
+
+.loading-card,
+.empty-card {
+  margin-top: 24rpx;
+  padding: 42rpx 28rpx;
+  background: rgba(255, 252, 247, 0.96);
+  text-align: center;
+}
+
+.loading-text,
+.empty-title {
+  color: #2f241b;
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.empty-desc {
+  display: block;
+  margin-top: 12rpx;
+  color: #8f7c6e;
+  font-size: 24rpx;
+  line-height: 1.7;
+}
+
+.candidate-list {
+  margin-top: 24rpx;
+}
+
+.candidate-card {
+  padding: 24rpx;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 249, 242, 0.96) 100%);
+}
+
+.candidate-card + .candidate-card {
+  margin-top: 18rpx;
+}
+
+.candidate-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.candidate-copy {
+  flex: 1;
+  min-width: 0;
+  padding-right: 16rpx;
+}
+
+.candidate-title {
+  display: block;
+  color: #2f241b;
+  font-size: 30rpx;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.candidate-meta {
+  display: block;
+  margin-top: 10rpx;
+  color: #8f7c6e;
+  font-size: 22rpx;
+}
+
+.candidate-status {
+  flex-shrink: 0;
+  padding: 10rpx 18rpx;
+  border-radius: 999rpx;
+  font-size: 20rpx;
+}
+
+.candidate-status.own {
+  background: rgba(24, 139, 87, 0.12);
+  color: #157853;
+}
+
+.candidate-status.occupied {
+  background: rgba(188, 86, 64, 0.12);
+  color: #bc5640;
+}
+
+.candidate-note {
+  display: block;
+  margin-top: 14rpx;
+  color: #6b5a4f;
+  font-size: 22rpx;
+  line-height: 1.7;
+}
+
+.candidate-actions {
+  display: flex;
+  margin-top: 20rpx;
+}
+
+.candidate-btn {
+  min-width: 178rpx;
+  min-height: 62rpx;
+  padding: 0 24rpx;
+  border-radius: 999rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.candidate-btn.primary {
+  background: linear-gradient(135deg, #8f1f1f 0%, #bc5640 100%);
+}
+
+.candidate-btn.warn {
+  background: rgba(188, 86, 64, 0.12);
+}
+
+.candidate-btn.disabled {
+  background: rgba(60, 41, 27, 0.08);
+}
+
+.candidate-btn-text {
+  color: #fff8f0;
+  font-size: 22rpx;
+  font-weight: 700;
+}
+
+.candidate-btn-text.warn-text {
+  color: #bc5640;
+}
+
+.candidate-btn-text.disabled-text {
+  color: #8a7769;
+}

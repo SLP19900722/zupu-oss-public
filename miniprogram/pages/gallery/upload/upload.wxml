@@ -1,0 +1,44 @@
+<view class="upload-page">
+  <view class="hero-card">
+    <text class="hero-kicker">Gallery Submit</text>
+    <text class="hero-title">上传家族影像</text>
+    <text class="hero-desc">{{isAdmin ? '管理员上传后会直接发布到首页展示窗。' : '普通成员上传后会进入管理员审核，通过后才会出现在首页。'}}</text>
+  </view>
+
+  <view class="upload-card">
+    <view class="field-head">
+      <text class="field-title">影像主图</text>
+      <text class="field-tip">支持 jpg、jpeg、png、gif</text>
+    </view>
+
+    <view class="image-panel {{previewUrl ? 'has-image' : ''}}" bindtap="chooseImage">
+      <image class="preview-image" wx:if="{{previewUrl}}" src="{{previewUrl}}" mode="aspectFill"></image>
+      <view class="image-overlay" wx:if="{{previewUrl}}">
+        <text class="image-overlay-text">{{uploading ? '上传中...' : '点击更换图片'}}</text>
+      </view>
+
+      <view class="image-empty" wx:else>
+        <view class="image-empty-plus">
+          <view class="plus-line vertical"></view>
+          <view class="plus-line horizontal"></view>
+        </view>
+        <text class="image-empty-title">添加一张家族影像</text>
+        <text class="image-empty-desc">可以上传祖宅、祠堂、合影、节庆、旧照片等内容</text>
+      </view>
+    </view>
+
+    <view class="field-block">
+      <text class="field-label">标题</text>
+      <input class="field-input" maxlength="30" placeholder="例如：清明祭祖、家族团聚、祖宅旧影" value="{{form.title}}" bindinput="onTitleInput" />
+    </view>
+
+    <view class="field-block">
+      <text class="field-label">一句话说明</text>
+      <textarea class="field-textarea" maxlength="80" placeholder="补充这张图片背后的时间、地点或故事" value="{{form.description}}" bindinput="onDescInput"></textarea>
+    </view>
+
+    <view class="submit-btn {{submitting ? 'is-disabled' : ''}}" bindtap="submitGallery">
+      <text class="submit-btn-text">{{isAdmin ? '发布到首页' : '提交管理员审核'}}</text>
+    </view>
+  </view>
+</view>

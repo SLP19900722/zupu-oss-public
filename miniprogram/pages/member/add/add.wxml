@@ -1,0 +1,158 @@
+﻿<view class="add-page">
+  <view class="hero-card">
+    <text class="hero-kicker">Member Editor</text>
+    <text class="hero-title">{{pageTitle}}</text>
+    <text class="hero-desc">{{heroDesc}}</text>
+
+    <view class="hero-pill">
+      <text class="hero-pill-text">{{avatarPreview ? '头像已上传至云端' : '图片仅在上传成功后保存到云端 COS'}}</text>
+    </view>
+    <view class="hero-pill" wx:if="{{isSelfLimitedEdit}}">
+      <text class="hero-pill-text">普通成员当前仅可修改自己的头像和生日</text>
+    </view>
+    <view class="hero-pill" wx:if="{{isExternalSpouseEdit && spouseOwnerMemberName}}">
+      <text class="hero-pill-text">当前身份挂靠：{{spouseOwnerMemberName}}</text>
+    </view>
+  </view>
+
+  <view class="section-card">
+    <text class="section-kicker">Avatar</text>
+    <text class="section-title">成员头像</text>
+    <text class="section-desc">头像仅保存云端 URL，不再保留本地 Base64 兜底。</text>
+
+    <view class="avatar-uploader {{avatarPreview ? 'has-image' : ''}}" bindtap="onChooseAvatar">
+      <image class="avatar-image" wx:if="{{avatarPreview}}" src="{{avatarPreview}}" mode="aspectFill"></image>
+
+      <view class="avatar-overlay" wx:if="{{avatarPreview}}">
+        <text class="avatar-overlay-text">{{uploadingAvatar ? '上传中...' : '点击更换头像'}}</text>
+      </view>
+
+      <view class="avatar-empty" wx:else>
+        <view class="avatar-empty-plus">
+          <view class="plus-line vertical"></view>
+          <view class="plus-line horizontal"></view>
+        </view>
+        <text class="avatar-empty-title">{{uploadingAvatar ? '正在上传头像...' : '上传成员头像'}}</text>
+        <text class="avatar-empty-desc">支持压缩上传，成功后返回云端地址</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section-card">
+    <text class="section-kicker">Basic Info</text>
+    <text class="section-title">基础信息</text>
+
+    <block wx:if="{{isSelfLimitedEdit}}">
+      <view class="field-block">
+        <text class="field-label">姓名</text>
+        <view class="field-picker">{{form.name || '未填写'}}</view>
+      </view>
+
+      <view class="field-block">
+        <text class="field-label">出生日期</text>
+        <picker mode="date" value="{{form.birthDate}}" bindchange="onBirthChange">
+          <view class="field-picker">{{form.birthDate || '请选择日期'}}</view>
+        </picker>
+      </view>
+    </block>
+
+    <block wx:else>
+      <view class="field-block">
+        <text class="field-label">姓名</text>
+        <input class="field-input" placeholder="请输入姓名" value="{{form.name}}" bindinput="onNameChange" />
+      </view>
+
+      <view class="field-grid">
+        <view class="field-block half">
+          <text class="field-label">性别</text>
+          <picker mode="selector" range="{{genderOptions}}" value="{{form.gender - 1}}" bindchange="onGenderChange" disabled="{{isExternalSpouseEdit}}">
+            <view class="field-picker">{{form.gender == 1 ? '男' : '女'}}</view>
+          </picker>
+        </view>
+
+        <view class="field-block half">
+          <text class="field-label">出生日期</text>
+          <picker mode="date" value="{{form.birthDate}}" bindchange="onBirthChange">
+            <view class="field-picker">{{form.birthDate || '请选择日期'}}</view>
+          </picker>
+        </view>
+      </view>
+
+      <view class="field-grid">
+        <view class="field-block half">
+          <text class="field-label">存世状态</text>
+          <picker mode="selector" range="{{aliveOptions}}" value="{{form.isAlive == 1 ? 0 : 1}}" bindchange="onAliveChange">
+            <view class="field-picker">{{form.isAlive == 1 ? '健在' : '已故'}}</view>
+          </picker>
+        </view>
+
+        <view class="field-block half" wx:if="{{form.isAlive == 2}}">
+          <text class="field-label">去世日期</text>
+          <picker mode="date" value="{{form.deathDate}}" bindchange="onDeathChange">
+            <view class="field-picker">{{form.deathDate || '请选择日期'}}</view>
+          </picker>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <view class="section-card" wx:if="{{!isExternalSpouseEdit && !isSelfLimitedEdit}}">
+    <text class="section-kicker">Family Relation</text>
+    <text class="section-title">亲属关系</text>
+    <text class="section-desc" wx:if="{{parentModeHint}}">{{parentModeHint}}</text>
+
+    <view class="field-block">
+      <text class="field-label">父亲</text>
+      <picker mode="selector" range="{{fatherOptions}}" value="{{fatherIndex}}" bindchange="onFatherChange">
+        <view class="field-picker">{{fatherOptions[fatherIndex]}}</view>
+      </picker>
+    </view>
+
+    <view class="field-block">
+      <text class="field-label">母亲姓名</text>
+      <input class="field-input" placeholder="请输入母亲姓名" value="{{form.motherName}}" bindinput="onMotherNameChange" />
+    </view>
+
+    <view class="field-block" wx:if="{{form.gender == 1}}">
+      <text class="field-label">妻子姓名</text>
+      <input class="field-input" placeholder="请输入妻子姓名" value="{{form.spouseName}}" bindinput="onSpouseNameChange" />
+    </view>
+  </view>
+
+  <view class="section-card" wx:if="{{!isSelfLimitedEdit}}">
+    <text class="section-kicker">Life Info</text>
+    <text class="section-title">生活信息</text>
+
+    <view class="field-block">
+      <text class="field-label">联系方式</text>
+      <input class="field-input" placeholder="请输入手机号" value="{{form.phone}}" bindinput="onPhoneChange" />
+    </view>
+
+    <view class="field-block">
+      <text class="field-label">工作单位</text>
+      <input class="field-input" placeholder="请输入工作单位" value="{{form.workplace}}" bindinput="onWorkplaceChange" />
+    </view>
+
+    <view class="field-block">
+      <text class="field-label">现居地</text>
+      <input class="field-input" placeholder="请输入现居地址" value="{{form.currentAddress}}" bindinput="onAddressChange" />
+    </view>
+
+    <view class="field-block">
+      <text class="field-label">职业</text>
+      <input class="field-input" placeholder="请输入职业" value="{{form.occupation}}" bindinput="onOccupationChange" />
+    </view>
+  </view>
+
+  <view class="section-card" wx:if="{{!isSelfLimitedEdit}}">
+    <text class="section-kicker">Introduction</text>
+    <text class="section-title">个人简介</text>
+    <textarea class="field-textarea" placeholder="请输入简介、经历或家族故事" maxlength="300" value="{{form.introduction}}" bindinput="onIntroChange"></textarea>
+  </view>
+
+  <view class="submit-bar">
+    <view class="submit-btn {{submitting || uploadingAvatar ? 'is-disabled' : ''}}" bindtap="submit">
+      <text class="submit-btn-text">{{uploadingAvatar ? '头像上传中...' : (submitting ? '提交中...' : submitText)}}</text>
+    </view>
+  </view>
+</view>

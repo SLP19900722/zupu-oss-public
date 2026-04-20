@@ -1,0 +1,79 @@
+<view class="binding-page">
+  <view class="hero-card">
+    <text class="hero-kicker">身份改绑</text>
+    <text class="hero-title">{{userName || '\u5F85\u5904\u7406\u7528\u6237'}}</text>
+    <text class="hero-desc" wx:if="{{userRealName}}">真实姓名：{{userRealName}}</text>
+    <text class="hero-desc" wx:if="{{userPhone}}">手机号：{{userPhone}}</text>
+    <text class="hero-summary">{{bindingText}}</text>
+
+    <view class="hero-actions">
+      <view class="hero-btn ghost" bindtap="loadPageData">
+        <text class="hero-btn-text ghost-text">刷新</text>
+      </view>
+      <view class="hero-btn danger" bindtap="clearBinding">
+        <text class="hero-btn-text">解绑</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="panel-card">
+    <view class="panel-head">
+      <view class="panel-copy">
+        <text class="panel-title">选择新的身份成员</text>
+        <text class="panel-desc">支持搜索姓名，也支持接管当前已被其他账号错绑的成员。</text>
+      </view>
+    </view>
+
+    <view class="search-shell">
+      <input
+        class="search-input"
+        placeholder="搜索成员姓名或挂靠人"
+        placeholder-class="search-placeholder"
+        value="{{keyword}}"
+        bindinput="onSearchInput"
+        confirm-type="search"
+      />
+      <view class="search-clear" wx:if="{{keyword}}" bindtap="clearSearch">
+        <text class="search-clear-text">清空</text>
+      </view>
+    </view>
+
+    <view class="loading-card" wx:if="{{loading}}">
+      <text class="loading-text">正在加载成员列表...</text>
+    </view>
+
+    <view class="candidate-list" wx:elif="{{filteredCandidates.length > 0}}">
+      <view class="candidate-card" wx:for="{{filteredCandidates}}" wx:key="id">
+        <view class="candidate-main">
+          <view class="candidate-topline">
+            <view class="candidate-copy">
+              <text class="candidate-title">{{item.displayTitle}}</text>
+              <text class="candidate-meta" wx:if="{{item.metaText}}">{{item.metaText}}</text>
+            </view>
+            <text class="candidate-status own" wx:if="{{bindingDetail && item.id === bindingDetail.preferredMemberId}}">当前绑定</text>
+            <text class="candidate-status occupied" wx:elif="{{item.boundByOtherUser}}">已被占用</text>
+          </view>
+
+          <text class="candidate-note" wx:if="{{item.boundText}}">{{item.boundText}}</text>
+
+          <view class="candidate-actions">
+            <view
+              class="candidate-btn {{bindingDetail && item.id === bindingDetail.preferredMemberId ? 'disabled' : (item.boundByOtherUser ? 'warn' : 'primary')}}"
+              data-id="{{item.id}}"
+              bindtap="selectCandidate"
+            >
+              <text class="candidate-btn-text {{bindingDetail && item.id === bindingDetail.preferredMemberId ? 'disabled-text' : (item.boundByOtherUser ? 'warn-text' : '')}}">
+                {{bindingDetail && item.id === bindingDetail.preferredMemberId ? '\u5DF2\u9009\u4E2D' : (item.boundByOtherUser ? '\u63A5\u7BA1\u6539\u7ED1' : '\u6539\u7ED1\u5230\u8FD9\u91CC')}}
+              </text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-card" wx:else>
+      <text class="empty-title">没有匹配的候选成员</text>
+      <text class="empty-desc">可以更换关键词搜索，或清空搜索后查看完整列表。</text>
+    </view>
+  </view>
+</view>

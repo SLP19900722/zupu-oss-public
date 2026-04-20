@@ -1,0 +1,177 @@
+<view class="container">
+  <view class="notice-card select-mode" wx:if="{{selectMode}}">
+    <text class="notice-text">{{selectionSummaryText}}</text>
+  </view>
+
+  <view class="notice-card" wx:elif="{{!preferredMemberId || preferredMissing}}">
+    <text class="notice-text">{{preferredMissing ? '当前绑定成员不存在，请重新绑定本人。' : '还未绑定“我是谁”，会先展示一支可读的关系树。'}}</text>
+    <view class="notice-link" bindtap="goSelectSelf">立即绑定</view>
+  </view>
+
+  <view wx:if="{{!authRequired && members.length > 0}}" class="tree-shell">
+    <view class="view-toolbar">
+      <view class="view-switch" wx:if="{{!selectMode}}">
+        <view class="view-switch-item {{treeViewMode === 'pedigree_focus' ? 'active' : ''}}" bindtap="switchTreeView" data-mode="pedigree_focus">关系树</view>
+        <view class="view-switch-item {{treeViewMode === 'overview_tree' ? 'active' : ''}}" bindtap="switchTreeView" data-mode="overview_tree">总代总览</view>
+      </view>
+      <view class="mini-btn" wx:if="{{selectMode}}" bindtap="goBackSelection">返回绑定</view>
+      <view class="mini-btn locate-trigger" wx:else bindtap="locateSelfNode">定位本人</view>
+    </view>
+
+    <view class="summary-row">
+      <view class="summary-chip" wx:if="{{identitySummaryText}}">{{identitySummaryText}}</view>
+      <view class="summary-chip primary" wx:if="{{selectionHintText}}">{{selectionHintText}}</view>
+      <view class="summary-chip primary">{{focusSummaryText}}</view>
+      <view class="summary-chip">{{rangeSummaryText}}</view>
+    </view>
+
+    <view wx:if="{{treeViewMode === 'pedigree_focus'}}" class="pedigree-view">
+      <view class="expand-actions">
+        <view class="expand-btn" bindtap="expandOlderGenerations">再看前3代</view>
+        <view class="expand-btn ghost" bindtap="expandLaterGenerations">再看后3代</view>
+      </view>
+
+      <view class="tree-board-shell">
+        <scroll-view id="pedigree-scroll-y" class="tree-scroll-y" scroll-y="true" show-scrollbar="true" enhanced="true" scroll-top="{{pedigreeScrollTop}}" bindscroll="handlePedigreeScrollY">
+          <scroll-view id="pedigree-scroll-x" class="tree-scroll-x" scroll-x="true" show-scrollbar="true" enable-flex="true" scroll-left="{{pedigreeScrollLeft}}" bindscroll="handlePedigreeScrollX">
+            <view class="tree-canvas" style="{{pedigreeCanvasStyle}}">
+              <view class="tree-gen-label" wx:for="{{pedigreeLabels}}" wx:for-item="label" wx:key="key" style="left: {{label.left}}rpx; top: {{label.top}}rpx; width: {{label.width}}rpx; height: {{label.height}}rpx;">
+                {{label.title}}
+              </view>
+
+              <view class="tree-edge tree-edge-{{edge.axis}} {{edge.highlight ? 'highlight' : ''}}" wx:for="{{pedigreeEdges}}" wx:for-item="edge" wx:key="key" style="left: {{edge.left}}rpx; top: {{edge.top}}rpx; width: {{edge.width}}rpx; height: {{edge.height}}rpx;"></view>
+
+              <view class="tree-node {{node.isSelf ? 'self' : ''}} {{node.isFocus ? 'focus' : ''}} {{node.isLocatePulse ? 'locate-pulse' : ''}} {{node.isRelated ? 'related' : ''}} {{node.isGroupNode ? 'group' : ''}} {{node.selectStateClass}}" wx:for="{{pedigreeNodes}}" wx:for-item="node" wx:key="id" id="{{node.anchorId}}" style="left: {{node.left}}rpx; top: {{node.top}}rpx; width: {{node.width}}rpx; height: {{node.height}}rpx;" bindtap="handleTreeNodeTap" data-id="{{node.id}}" data-action="{{node.tapAction}}" data-parent-id="{{node.groupParentId}}">
+                <view class="tree-node-top">
+                  <view class="tree-node-badge" wx:if="{{node.badgeText}}">{{node.badgeText}}</view>
+                  <view class="tree-node-pills" wx:if="{{node.showFocusEntry || node.showExpandEntry}}">
+                    <view class="tree-node-pill ghost" wx:if="{{node.showExpandEntry}}" catchtap="expandBranch" data-id="{{node.id}}">{{node.expandText}}</view>
+                    <view class="tree-node-pill" wx:if="{{node.showFocusEntry}}" catchtap="handleFocusEntryTap" data-id="{{node.id}}" data-action="{{node.focusAction}}">{{node.focusEntryText}}</view>
+                  </view>
+                </view>
+                <view class="tree-node-name-group">
+                  <view class="tree-node-name-line">
+                    <view class="alive-dot {{node.aliveStatus}}" wx:if="{{!node.isGroupNode}}"></view>
+                    <text class="tree-node-name">{{node.displayName}}</text>
+                    <text class="tree-node-gender" wx:if="{{node.genderTag}}">({{node.genderTag}})</text>
+                  </view>
+                  <text class="tree-node-secondary" wx:if="{{node.secondaryText}}">{{node.secondaryText}}</text>
+                  <view class="tree-node-locate-badge {{node.isSpouseAttach ? 'spouse' : 'self'}}" wx:if="{{node.locateBadgeText}}">
+                    {{node.locateBadgeText}}
+                  </view>
+                  <text class="tree-node-select-tip {{node.selectionDisabled ? 'disabled' : 'active'}}" wx:if="{{node.selectHintText}}">{{node.selectHintText}}</text>
+                  <text class="tree-node-locate-tip" wx:if="{{node.locateHintText}}">{{node.locateHintText}}</text>
+                </view>
+              </view>
+
+              <view class="locate-callout {{identityType === 'EXTERNAL_SPOUSE' ? 'spouse' : 'self'}} {{locateCalloutDirection}}" wx:if="{{locateCalloutStyle && locateToastText}}" style="{{locateCalloutStyle}}">
+                <view class="locate-callout-glow"></view>
+                <view class="locate-callout-arrow" style="{{locateCalloutArrowStyle}}"></view>
+                <text class="locate-callout-kicker">{{identityType === 'EXTERNAL_SPOUSE' ? '配偶挂靠' : '本人定位'}}</text>
+                <text class="locate-callout-text">{{locateToastText}}</text>
+              </view>
+            </view>
+          </scroll-view>
+        </scroll-view>
+      </view>
+    </view>
+
+    <view wx:elif="{{treeViewMode === 'overview_tree'}}" class="overview-view">
+      <view class="overview-atmosphere">
+        <view class="overview-orb overview-orb-a"></view>
+        <view class="overview-orb overview-orb-b"></view>
+        <view class="overview-orb overview-orb-c"></view>
+      </view>
+      <view class="tree-board-shell overview overview-stage {{overviewSceneFxClass}}">
+        <scroll-view id="overview-scroll-y" class="tree-scroll-y overview-scroll-y" scroll-y="{{overviewScrollEnabled}}" show-scrollbar="true" enhanced="true" scroll-top="{{overviewScrollTop}}" bindscroll="handleOverviewScrollY">
+          <scroll-view id="overview-scroll-x" class="tree-scroll-x overview-scroll-x" scroll-x="{{overviewScrollEnabled}}" show-scrollbar="true" enable-flex="true" scroll-left="{{overviewScrollLeft}}" bindscroll="handleOverviewScrollX">
+            <view id="overview-pinch-surface" class="overview-scale-shell" style="{{overviewScaleShellStyle}}" bindtouchstart="handleOverviewPinchStart" bindtouchmove="handleOverviewPinchMove" bindtouchend="handleOverviewPinchEnd" bindtouchcancel="handleOverviewPinchEnd">
+              <view class="overview-transient-layer" style="{{transientOverviewTransform}}">
+              <view class="tree-canvas overview-scale-layer" style="{{overviewCanvasInnerStyle}}">
+              <view class="tree-gen-label" wx:for="{{overviewLabels}}" wx:for-item="label" wx:key="key" style="left: {{label.left}}rpx; top: {{label.top}}rpx; width: {{label.width}}rpx; height: {{label.height}}rpx;">
+                {{label.title}}
+              </view>
+
+              <view class="tree-edge tree-edge-{{edge.axis}} {{edge.highlight ? 'highlight' : ''}}" wx:for="{{overviewEdges}}" wx:for-item="edge" wx:key="key" style="left: {{edge.left}}rpx; top: {{edge.top}}rpx; width: {{edge.width}}rpx; height: {{edge.height}}rpx;"></view>
+
+              <view class="tree-node overview {{node.isSelf ? 'self' : ''}} {{node.isFocus ? 'focus' : ''}} {{node.isLocatePulse ? 'locate-pulse' : ''}} {{node.isRelated ? 'related' : ''}} {{node.isGroupNode ? 'group' : ''}} {{node.selectStateClass}}" wx:for="{{overviewNodes}}" wx:for-item="node" wx:key="id" id="{{node.anchorId}}" style="left: {{node.left}}rpx; top: {{node.top}}rpx; width: {{node.width}}rpx; height: {{node.height}}rpx;" data-id="{{node.id}}" data-action="{{node.tapAction}}" data-parent-id="{{node.groupParentId}}">
+                <view class="tree-node-top">
+                  <view class="tree-node-badge" wx:if="{{node.badgeText}}">{{node.badgeText}}</view>
+                  <view class="tree-node-pills" wx:if="{{node.showFocusEntry}}">
+                    <view class="tree-node-pill" wx:if="{{node.showFocusEntry}}" catchtap="handleFocusEntryTap" data-id="{{node.id}}" data-action="{{node.focusAction}}">{{node.focusEntryText}}</view>
+                  </view>
+                </view>
+                <view class="tree-node-name-group">
+                  <view class="tree-node-name-line">
+                    <view class="alive-dot {{node.aliveStatus}}" wx:if="{{!node.isGroupNode}}"></view>
+                    <text class="tree-node-name">{{node.displayName}}</text>
+                    <text class="tree-node-gender" wx:if="{{node.genderTag}}">({{node.genderTag}})</text>
+                  </view>
+                  <text class="tree-node-secondary" wx:if="{{node.secondaryText}}">{{node.secondaryText}}</text>
+                  <view class="tree-node-locate-badge {{node.isSpouseAttach ? 'spouse' : 'self'}}" wx:if="{{node.locateBadgeText}}">
+                    {{node.locateBadgeText}}
+                  </view>
+                  <text class="tree-node-select-tip {{node.selectionDisabled ? 'disabled' : 'active'}}" wx:if="{{node.selectHintText}}">{{node.selectHintText}}</text>
+                  <text class="tree-node-locate-tip" wx:if="{{node.locateHintText}}">{{node.locateHintText}}</text>
+                </view>
+              </view>
+
+              <view class="locate-callout compact overview-pop {{identityType === 'EXTERNAL_SPOUSE' ? 'spouse' : 'self'}} {{locateCalloutDirection}}" wx:if="{{locateCalloutStyle && locateToastText}}" style="{{locateCalloutStyle}}">
+                <view class="locate-callout-glow"></view>
+                <view class="locate-callout-arrow" style="{{locateCalloutArrowStyle}}"></view>
+                <text class="locate-callout-kicker">{{identityType === 'EXTERNAL_SPOUSE' ? '配偶挂靠' : '本人定位'}}</text>
+                <text class="locate-callout-text">{{locateToastText}}</text>
+              </view>
+              </view>
+              </view>
+            </view>
+          </scroll-view>
+        </scroll-view>
+      </view>
+    </view>
+
+    <view wx:else class="classic-panel">
+      <view class="section-head slim">
+        <view>
+          <text class="section-title">兼容视图</text>
+          <text class="section-sub">当新树布局异常时，仍可继续浏览经典结构。</text>
+        </view>
+        <view class="classic-actions">
+          <view class="tiny-btn ghost" bindtap="expandAll">展开</view>
+          <view class="tiny-btn" bindtap="collapseAll">折叠</view>
+        </view>
+      </view>
+
+      <scroll-view class="classic-scroll-y" scroll-y="true" show-scrollbar="true" enhanced="true">
+        <scroll-view class="classic-scroll-x" scroll-x="true" show-scrollbar="true" enable-flex="true">
+          <view class="classic-list">
+            <view class="classic-branch" wx:for="{{displayList}}" wx:for-item="item" wx:key="id">
+              <view class="classic-indent" style="width: {{item.indentWidth}}rpx;"></view>
+              <view class="classic-member {{item.selectStateClass}}" bindtap="goDetail" data-id="{{item.id}}">
+                <view class="classic-toggle {{item.hasChildren ? 'active' : ''}}" wx:if="{{item.hasChildren}}" catchtap="toggleNode" data-id="{{item.id}}">{{item.expanded ? '-' : '+'}}</view>
+                <view class="classic-toggle ghost" wx:else></view>
+                <view class="classic-copy">
+                  <text class="classic-name">{{item.name}}</text>
+                  <text class="classic-meta">第{{item.generation}}代 · {{item.gender == 1 ? '男' : (item.gender == 2 ? '女' : '成员')}}</text>
+                  <text class="classic-spouse" wx:if="{{item.spouseName}}">（{{item.spouseName}}）</text>
+                  <text class="classic-select-tip {{item.selectionDisabled ? 'disabled' : 'active'}}" wx:if="{{item.selectHintText}}">{{item.selectHintText}}</text>
+                </view>
+              </view>
+            </view>
+            <view class="empty-state" wx:if="{{displayList.length === 0}}">
+              <text class="empty-title">暂无可展示成员</text>
+            </view>
+          </view>
+        </scroll-view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <view wx:else class="empty-panel">
+    <text class="empty-panel-title">{{authRequired ? '登录状态失效' : '暂无家族树数据'}}</text>
+    <text class="empty-panel-desc">{{loadErrorText ? loadErrorText : '当前没有可展示的成员数据。'}}</text>
+    <view class="empty-panel-action" wx:if="{{authRequired}}" bindtap="goLoginPage">去登录后再看</view>
+  </view>
+
+  <view class="bottom-space"></view>
+</view>

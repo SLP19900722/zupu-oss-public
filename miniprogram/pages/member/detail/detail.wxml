@@ -1,0 +1,145 @@
+﻿<view class="detail-page">
+  <view class="skeleton-wrap" wx:if="{{loading}}">
+    <view class="skeleton-card hero">
+      <view class="skeleton-avatar"></view>
+      <view class="skeleton-copy">
+        <view class="skeleton-line wide"></view>
+        <view class="skeleton-line"></view>
+        <view class="skeleton-line short"></view>
+      </view>
+    </view>
+
+    <view class="skeleton-card" wx:for="{{[1,2,3]}}" wx:key="*this">
+      <view class="skeleton-line wide"></view>
+      <view class="skeleton-line"></view>
+      <view class="skeleton-line short"></view>
+    </view>
+  </view>
+
+  <block wx:elif="{{member}}">
+    <view class="hero-card">
+      <view class="hero-profile">
+        <view class="avatar-shell" bindtap="previewAvatar">
+          <image class="avatar-image" wx:if="{{member.avatarUrl}}" src="{{member.avatarUrl}}" mode="aspectFill"></image>
+          <text class="avatar-text" wx:else>{{member.initial}}</text>
+        </view>
+
+        <view class="hero-copy">
+          <view class="hero-name-row">
+            <text class="hero-name">{{member.name}}</text>
+            <text class="hero-status {{member.statusClass}}">{{member.statusText}}</text>
+          </view>
+
+          <text class="hero-meta">{{member.genderText}} · {{member.birthText}}</text>
+
+          <view class="hero-tags">
+            <text class="hero-tag">{{member.generationText}}</text>
+            <text class="hero-tag muted">{{member.addressText}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="hero-actions" wx:if="{{canEdit || canDelete}}">
+        <view class="hero-action light" wx:if="{{canEdit}}" bindtap="goEdit">
+          <text class="hero-action-text dark">编辑</text>
+        </view>
+
+        <view class="hero-action light" wx:if="{{canAddChild}}" bindtap="goAddChild">
+          <text class="hero-action-text dark">新增子女</text>
+        </view>
+
+        <view class="hero-action danger" wx:if="{{canDelete}}" bindtap="deleteMember">
+          <text class="hero-action-text">删除</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="section-card">
+      <text class="section-kicker">Profile</text>
+      <text class="section-title">基础信息</text>
+
+      <view class="info-list">
+        <view class="info-row" wx:for="{{baseRows}}" wx:key="label">
+          <text class="info-label">{{item.label}}</text>
+          <text class="info-value">{{item.value}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="section-card">
+      <text class="section-kicker">Life Trace</text>
+      <text class="section-title">生活轨迹</text>
+
+      <view class="info-list">
+        <view class="info-row" wx:for="{{lifeRows}}" wx:key="label">
+          <text class="info-label">{{item.label}}</text>
+          <text class="info-value">{{item.value}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="section-card">
+      <text class="section-kicker">Introduction</text>
+      <text class="section-title">个人简介</text>
+      <text class="intro-text">{{member.introText}}</text>
+    </view>
+
+    <view class="relation-grid">
+      <view class="relation-card">
+        <text class="section-title small">父母信息</text>
+
+        <view class="relation-list" wx:if="{{parents.length > 0 || motherText}}">
+          <view class="relation-item" wx:for="{{parents}}" wx:key="id" data-id="{{item.id}}" bindtap="goRelationDetail">
+            <view class="relation-avatar tone-{{item.accent}}">
+              <text class="relation-avatar-text">{{item.initial}}</text>
+            </view>
+            <view class="relation-copy">
+              <text class="relation-name">{{item.name}}</text>
+              <text class="relation-meta">{{item.genderText}}</text>
+            </view>
+            <text class="relation-arrow">→</text>
+          </view>
+
+          <view class="relation-item static" wx:if="{{motherText}}">
+            <view class="relation-avatar tone-gold">
+              <text class="relation-avatar-text">母</text>
+            </view>
+            <view class="relation-copy">
+              <text class="relation-name">{{motherText}}</text>
+              <text class="relation-meta">母亲（文本）</text>
+            </view>
+          </view>
+        </view>
+
+        <text class="empty-inline" wx:else>暂无父母信息</text>
+      </view>
+
+      <view class="relation-card">
+        <text class="section-title small">子女信息</text>
+
+        <view class="relation-list" wx:if="{{children.length > 0}}">
+          <view class="relation-item" wx:for="{{children}}" wx:key="id" data-id="{{item.id}}" bindtap="goRelationDetail">
+            <view class="relation-avatar tone-{{item.accent}}">
+              <text class="relation-avatar-text">{{item.initial}}</text>
+            </view>
+            <view class="relation-copy">
+              <text class="relation-name">{{item.name}}</text>
+              <text class="relation-meta">{{item.genderText}}</text>
+            </view>
+            <text class="relation-arrow">→</text>
+          </view>
+        </view>
+
+        <text class="empty-inline" wx:else>暂无子女信息</text>
+      </view>
+    </view>
+  </block>
+
+  <view class="empty-card" wx:else>
+    <view class="empty-mark"></view>
+    <text class="empty-title">未找到成员信息</text>
+    <text class="empty-desc">可能是该成员尚未审核通过，或当前链接已失效。</text>
+  </view>
+
+  <view class="bottom-space"></view>
+</view>

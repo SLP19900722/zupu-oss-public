@@ -1,0 +1,141 @@
+<view class="login-page">
+  <view class="hero-section">
+    <image class="hero-image" src="../../assets/login/hero-terraces.jpg" mode="aspectFill"></image>
+    <view class="hero-shade"></view>
+    <view class="hero-texture"></view>
+    <view class="hero-orb hero-orb-left"></view>
+    <view class="hero-orb hero-orb-right"></view>
+
+    <view class="hero-copy">
+      <view class="hero-tag">山河有脉 家族有源</view>
+
+      <view class="seal-wrap">
+        <view class="seal-ring seal-ring-outer"></view>
+        <view class="seal-ring seal-ring-inner"></view>
+        <view class="seal-face">
+          <text class="seal-text">孙</text>
+        </view>
+      </view>
+
+      <view class="title-row">
+        <text class="page-title">孙氏族谱</text>
+        <view class="latin-badge">SUN</view>
+      </view>
+
+      <text class="page-subtitle">寻根问祖，承先启后，续写家风与家史</text>
+
+      <view class="heritage-pills">
+        <text class="heritage-pill">寻根</text>
+        <text class="heritage-pill">传承</text>
+        <text class="heritage-pill">家风</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="content-shell">
+    <view class="action-card">
+      <view class="action-accent"></view>
+
+      <view class="action-header">
+        <text class="action-kicker">族谱入口</text>
+        <text class="action-title">开启你的家族档案</text>
+        <text class="action-desc">登录后可查看成员信息、维护谱牒记录，并继续完善家谱内容。</text>
+      </view>
+
+      <view class="agreement-row" bindtap="togglePrivacy">
+        <view class="agreement-check {{isPrivacyAgreed ? 'checked' : ''}}">
+          <text class="agreement-tick" wx:if="{{isPrivacyAgreed}}">✓</text>
+        </view>
+
+        <view class="agreement-text">
+          <text class="agreement-label">我已阅读并同意</text>
+          <text class="agreement-link" catchtap="showPrivacyPolicy">《隐私政策》</text>
+          <text class="agreement-label">和</text>
+          <text class="agreement-link" catchtap="showUserAgreement">《用户协议》</text>
+        </view>
+      </view>
+
+      <button
+        class="primary-login {{!isPrivacyAgreed ? 'is-disabled' : ''}}"
+        bindtap="handleWxLogin"
+        disabled="{{!isPrivacyAgreed}}"
+      >
+        <view class="button-shine"></view>
+        <view class="button-copy">
+          <text class="button-title">微信一键登录</text>
+          <text class="button-subtitle">快速进入家族档案与成员身份绑定</text>
+        </view>
+        <text class="button-arrow">→</text>
+      </button>
+
+      <view class="button-split">
+        <view class="split-line"></view>
+        <text class="split-text">或使用管理员入口</text>
+        <view class="split-line"></view>
+      </view>
+
+      <button
+        class="secondary-login {{!isPrivacyAgreed ? 'is-disabled' : ''}}"
+        bindtap="goAdminLogin"
+        disabled="{{!isPrivacyAgreed}}"
+      >
+        <view class="secondary-badge">管</view>
+        <view class="secondary-copy">
+          <text class="secondary-title">管理员登录</text>
+          <text class="secondary-subtitle">用于审核、维护与后台管理</text>
+        </view>
+        <text class="secondary-arrow">→</text>
+      </button>
+    </view>
+
+    <view class="browse-link" bindtap="skipLogin">
+      <text class="browse-text">暂不登录，先看看家族故事</text>
+      <text class="browse-arrow">→</text>
+    </view>
+
+    <view class="story-card" wx:if="{{timelineData.length > 0}}">
+      <view class="story-head">
+        <view class="story-icon">
+          <view class="story-icon-core"></view>
+        </view>
+
+        <view class="story-head-copy">
+          <text class="story-title">家族迁徙脉络</text>
+          <text class="story-subtitle">跨越 {{timelineData.length}} 个历史节点，点击卡片可查看详情</text>
+        </view>
+      </view>
+
+      <scroll-view class="timeline-scroll" scroll-x="true" enable-flex="true" show-scrollbar="{{false}}">
+        <view class="timeline-row">
+          <view class="timeline-line"></view>
+
+          <view
+            class="timeline-item {{index === 0 ? 'is-origin' : ''}} {{index === timelineData.length - 1 ? 'is-current' : ''}}"
+            wx:for="{{timelineData}}"
+            wx:key="index"
+            wx:for-index="index"
+          >
+            <view class="timeline-marker">
+              <view class="timeline-marker-core"></view>
+            </view>
+
+            <view class="timeline-panel" data-item="{{item}}" bindtap="showTimelineDetail">
+              <text class="timeline-year">{{item.year}}年</text>
+              <text class="timeline-location">{{item.location}}</text>
+              <text class="timeline-name">{{item.title}}</text>
+              <text class="timeline-desc" wx:if="{{item.description}}">{{item.description}}</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="story-empty" wx:else>
+      <view class="story-empty-mark"></view>
+      <text class="story-empty-title">家族故事正在整理中</text>
+      <text class="story-empty-desc">登录后可继续补充迁徙节点、族谱资料与成员关系</text>
+    </view>
+
+    <text class="footer-text">祖脉有迹，家风可续</text>
+  </view>
+</view>

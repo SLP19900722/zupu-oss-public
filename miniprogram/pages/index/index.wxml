@@ -1,0 +1,261 @@
+<view class="home-page">
+  <view class="entrance-overlay step-{{entranceStep}}" wx:if="{{showEntranceOverlay}}">
+    <view class="entrance-noise"></view>
+    <view class="entrance-rays"></view>
+
+    <view class="entrance-content entrance-step-{{entranceStep}}">
+      <view class="entrance-badge">孙氏族谱 · 入场提示</view>
+      <text class="entrance-line">{{entranceLines[entranceStep]}}</text>
+      <text class="entrance-subline">入谱资格已核验，正在点亮你的宗族主角位</text>
+    </view>
+  </view>
+
+  <view class="hero-section">
+    <image class="hero-image" src="../../assets/home/hero-ancestral-hall.jpg" mode="aspectFill"></image>
+    <view class="hero-shade"></view>
+    <view class="hero-glow hero-glow-left"></view>
+    <view class="hero-glow hero-glow-right"></view>
+
+    <view class="hero-content">
+      <view class="hero-tag">族谱首页</view>
+
+      <view class="seal-wrap">
+        <view class="seal-ring seal-ring-outer"></view>
+        <view class="seal-ring seal-ring-inner"></view>
+        <view class="seal-face">
+          <text class="seal-text">孙</text>
+        </view>
+      </view>
+
+      <view class="hero-title-row">
+        <text class="hero-title">孙氏族谱</text>
+        <text class="hero-badge">SUN</text>
+      </view>
+
+      <text class="hero-subtitle">修身立德，传承家风，续写家史与家族影像</text>
+    </view>
+  </view>
+
+  <view class="content-shell">
+    <view class="stats-card">
+      <view class="stats-main">
+        <view class="stat-cell">
+          <text class="stat-value">{{stats.memberCount}}</text>
+          <text class="stat-label">家族成员</text>
+        </view>
+
+        <view class="stat-divider"></view>
+
+        <view class="stat-cell">
+          <text class="stat-value">{{stats.imageCount}}</text>
+          <text class="stat-label">首页影像</text>
+        </view>
+
+        <view class="stat-divider" wx:if="{{isAdmin}}"></view>
+
+        <view class="stat-cell" wx:if="{{isAdmin}}">
+          <text class="stat-value accent">{{stats.pendingGalleryCount}}</text>
+          <text class="stat-label">待审影像</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="latest-notice-card" wx:if="{{latestFamilyNotice}}">
+      <view class="latest-notice-kicker-row">
+        <text class="latest-notice-kicker">最新通知</text>
+        <view class="latest-notice-kicker-line"></view>
+      </view>
+      <text class="latest-notice-title">{{latestFamilyNotice.title}}</text>
+
+      <view class="latest-notice-panel">
+        <view class="latest-notice-row">
+          <text class="latest-notice-label">日期</text>
+          <text class="latest-notice-value">{{latestFamilyNotice.eventTimeText}}</text>
+        </view>
+        <view class="latest-notice-row">
+          <text class="latest-notice-label">地点</text>
+          <text class="latest-notice-value">{{latestFamilyNotice.locationText}}</text>
+        </view>
+      </view>
+
+      <text class="latest-notice-note" wx:if="{{latestFamilyNotice.remarkText}}">备注：{{latestFamilyNotice.remarkText}}</text>
+
+      <view class="latest-notice-actions">
+        <view class="latest-notice-btn subtle" bindtap="goLatestFamilyNotice">
+          <text class="latest-notice-btn-text subtle-text">查看详情</text>
+        </view>
+        <view
+          class="latest-notice-btn"
+          wx:if="{{isLoggedIn && familyEventSubscription.enabled && !familyEventSubscription.fullySubscribed}}"
+          bindtap="handleFamilyEventSubscriptionFromHome"
+        >
+          <text class="latest-notice-btn-text">开启提醒</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="gallery-card">
+      <view class="section-head">
+        <view class="section-copy">
+          <text class="section-kicker">Family Showcase</text>
+          <text class="section-title">家族影像展示窗</text>
+          <text class="section-desc section-desc-compact">{{gallerySectionDesc}}</text>
+        </view>
+
+        <view class="section-actions">
+          <view class="section-action-btn subtle" bindtap="goGalleryManage" wx:if="{{isLoggedIn}}">
+            <text class="section-action-text">{{isAdmin ? '管理影像' : '我的上传'}}</text>
+          </view>
+          <view class="section-action-btn" bindtap="openGalleryUpload">
+            <text class="section-action-text">{{isLoggedIn ? '上传影像' : '登录参与'}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="gallery-loading" wx:if="{{galleryLoading}}">
+        <view class="gallery-skeleton-media"></view>
+        <view class="gallery-skeleton-line wide"></view>
+        <view class="gallery-skeleton-line"></view>
+      </view>
+
+      <view class="gallery-window" wx:elif="{{!galleryEmpty}}">
+        <swiper
+          class="gallery-swiper"
+          circular="{{galleryImages.length > 1}}"
+          autoplay="{{galleryAutoplay}}"
+          interval="1500"
+          duration="500"
+          current="{{galleryCurrent}}"
+          previous-margin="52rpx"
+          next-margin="52rpx"
+          bindchange="onGalleryChange"
+        >
+          <block wx:for="{{galleryImages}}" wx:key="id">
+            <swiper-item>
+              <view class="gallery-slide" bindtap="handleGalleryTap">
+                <image class="gallery-image" src="{{item.imageUrl}}" mode="aspectFill"></image>
+
+                <view class="gallery-focus {{galleryPaused && galleryCurrent === index ? 'is-active' : ''}}">
+                  <text class="gallery-focus-text">导演已喊卡，可左右滑动继续选镜头</text>
+                  <view class="gallery-preview-btn" catchtap="previewCurrentGallery">
+                    <text class="gallery-preview-text">查看大图</text>
+                  </view>
+                </view>
+              </view>
+            </swiper-item>
+          </block>
+        </swiper>
+
+        <view class="gallery-dots">
+          <view class="gallery-dot {{galleryCurrent === index ? 'active' : ''}}" wx:for="{{galleryImages}}" wx:key="id"></view>
+        </view>
+      </view>
+
+      <view class="gallery-empty" wx:else>
+        <view class="gallery-empty-mark"></view>
+        <text class="gallery-empty-title">{{galleryEmptyTitle}}</text>
+        <text class="gallery-empty-desc">{{galleryEmptyText}}</text>
+        <view class="gallery-empty-btn" bindtap="openGalleryUpload">
+          <text class="gallery-empty-btn-text">{{isLoggedIn ? '上传家族影像' : '去登录'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="quick-card">
+      <view class="section-head compact">
+        <view class="section-copy">
+          <text class="section-title">快捷入口</text>
+          <text class="section-desc quick-section-desc">{{quickSectionDesc}}</text>
+        </view>
+      </view>
+
+      <view class="quick-grid">
+        <view class="quick-item tone-{{item.tone}}" wx:for="{{quickActions}}" wx:key="title" data-url="{{item.url}}" bindtap="goTo">
+          <view class="quick-glow"></view>
+
+          <view class="quick-top">
+            <view class="quick-icon-box">
+              <view class="icon-shape members" wx:if="{{item.iconKey === 'members'}}">
+                <view class="shape shape-head left"></view>
+                <view class="shape shape-head right"></view>
+                <view class="shape shape-body left"></view>
+                <view class="shape shape-body right"></view>
+              </view>
+
+              <view class="icon-shape tree" wx:if="{{item.iconKey === 'tree'}}">
+                <view class="shape node top"></view>
+                <view class="shape node left"></view>
+                <view class="shape node right"></view>
+                <view class="shape line vertical"></view>
+                <view class="shape line horizontal"></view>
+              </view>
+
+              <view class="icon-shape plus" wx:if="{{item.iconKey === 'plus'}}">
+                <view class="shape plus-line vertical"></view>
+                <view class="shape plus-line horizontal"></view>
+              </view>
+
+              <view class="icon-shape profile" wx:if="{{item.iconKey === 'profile'}}">
+                <view class="shape avatar-head"></view>
+                <view class="shape avatar-body"></view>
+              </view>
+            </view>
+
+            <view class="quick-arrow-shell compact">
+              <text class="quick-arrow">></text>
+            </view>
+          </view>
+
+          <view class="quick-copy">
+            <text class="quick-title">{{item.title}}</text>
+            <text class="quick-desc">{{item.desc}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="admin-card" wx:if="{{isAdmin}}">
+      <view class="section-head compact">
+        <view class="section-copy">
+          <text class="section-title">管理员工作台</text>
+        </view>
+      </view>
+
+      <view class="admin-grid">
+        <view class="admin-item" bindtap="goAudit">
+          <view class="admin-glow"></view>
+          <view class="admin-pill">
+            <text class="admin-pill-value">{{stats.pendingAuditCount}}</text>
+            <text class="admin-pill-label">待审成员</text>
+          </view>
+          <text class="admin-item-title">成员审核中心</text>
+          <text class="admin-item-desc">处理成员加入、资料修改与身份校验</text>
+          <view class="admin-footer">
+            <text class="admin-foot-label">进入处理</text>
+            <view class="admin-arrow-shell">
+              <text class="admin-arrow">→</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="admin-item highlight" bindtap="goGalleryManage">
+          <view class="admin-glow"></view>
+          <view class="admin-pill">
+            <text class="admin-pill-value">{{stats.pendingGalleryCount}}</text>
+            <text class="admin-pill-label">待审影像</text>
+          </view>
+          <text class="admin-item-title">家族影像管理</text>
+          <text class="admin-item-desc">审核普通成员投稿，并维护首页展示内容</text>
+          <view class="admin-footer">
+            <text class="admin-foot-label">进入处理</text>
+            <view class="admin-arrow-shell">
+              <text class="admin-arrow">→</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="bottom-space"></view>
+  </view>
+</view>

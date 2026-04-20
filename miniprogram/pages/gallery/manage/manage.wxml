@@ -1,0 +1,67 @@
+<view class="manage-page">
+  <view class="hero-card">
+    <view class="hero-copy">
+      <text class="hero-kicker">Image Center</text>
+      <text class="hero-title">家族影像管理</text>
+      <text class="hero-desc">{{isAdmin ? '管理员可审核投稿、维护首页发布内容，也可以查看自己的上传记录。' : '查看自己的影像投稿状态，已拒绝内容会显示审核说明。'}}</text>
+    </view>
+
+    <view class="hero-action" bindtap="goUpload">
+      <text class="hero-action-text">继续上传</text>
+    </view>
+  </view>
+
+  <view class="tab-row">
+    <view class="tab-item {{currentTab === item.key ? 'active' : ''}}" wx:for="{{tabs}}" wx:key="key" data-key="{{item.key}}" bindtap="switchTab">
+      <text class="tab-text">{{item.label}}</text>
+    </view>
+  </view>
+
+  <view class="gallery-list" wx:if="{{displayList.length > 0}}">
+    <view class="gallery-item" wx:for="{{displayList}}" wx:key="id">
+      <image class="gallery-thumb" src="{{item.imageUrl}}" mode="aspectFill" data-url="{{item.imageUrl}}" bindtap="previewItem"></image>
+
+      <view class="gallery-info">
+        <view class="gallery-topline">
+          <text class="gallery-item-title">{{item.title}}</text>
+          <text class="gallery-status {{item.statusClass}}">{{item.statusText}}</text>
+        </view>
+
+        <text class="gallery-item-desc">{{item.description}}</text>
+        <text class="gallery-item-time">{{item.createdAtText}}</text>
+        <text class="gallery-item-remark" wx:if="{{item.status === 2 && item.reviewRemark}}">原因：{{item.reviewRemark}}</text>
+
+        <view class="gallery-actions">
+          <view class="gallery-btn light" data-url="{{item.imageUrl}}" bindtap="previewItem">
+            <text class="gallery-btn-text dark">查看大图</text>
+          </view>
+
+          <view class="gallery-btn gold" wx:if="{{item.showPin}}" data-id="{{item.id}}" bindtap="pinToTop">
+            <text class="gallery-btn-text gold-text">{{item.pinText}}</text>
+          </view>
+
+          <view class="gallery-btn approve" wx:if="{{item.showApprove}}" data-id="{{item.id}}" bindtap="approve">
+            <text class="gallery-btn-text">通过</text>
+          </view>
+
+          <view class="gallery-btn reject" wx:if="{{item.showReject}}" data-id="{{item.id}}" bindtap="reject">
+            <text class="gallery-btn-text reject-text">拒绝</text>
+          </view>
+
+          <view class="gallery-btn danger" wx:if="{{item.showDelete}}" data-id="{{item.id}}" bindtap="removeItem">
+            <text class="gallery-btn-text">删除</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty-card" wx:else>
+    <view class="empty-mark"></view>
+    <text class="empty-title">当前没有可展示的内容</text>
+    <text class="empty-desc">{{emptyText}}</text>
+    <view class="empty-btn" bindtap="goUpload">
+      <text class="empty-btn-text">上传一张图片</text>
+    </view>
+  </view>
+</view>

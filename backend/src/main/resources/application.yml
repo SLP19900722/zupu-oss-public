@@ -1,0 +1,171 @@
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /api
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  application:
+    name: family-tree-backend
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL:jdbc:mysql://127.0.0.1:3306/family_tree_showcase?useUnicode=true&characterEncoding=utf8&connectionCollation=utf8mb4_general_ci&serverTimezone=Asia/Shanghai&useSSL=false&autoReconnect=true&failOverReadOnly=false}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:change-me}
+    hikari:
+      maximum-pool-size: ${DB_MAX_POOL_SIZE:20}
+      minimum-idle: ${DB_MIN_IDLE:5}
+      connection-timeout: ${DB_CONNECTION_TIMEOUT:30000}
+      idle-timeout: ${DB_IDLE_TIMEOUT:600000}
+      max-lifetime: ${DB_MAX_LIFETIME:1800000}
+      connection-test-query: SELECT 1
+      connection-init-sql: SET NAMES utf8mb4 COLLATE utf8mb4_general_ci
+
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+    database: ${REDIS_DATABASE:0}
+    timeout: ${REDIS_TIMEOUT:5000ms}
+    lettuce:
+      pool:
+        max-active: ${REDIS_POOL_MAX_ACTIVE:20}
+        max-idle: ${REDIS_POOL_MAX_IDLE:10}
+        min-idle: ${REDIS_POOL_MIN_IDLE:5}
+        max-wait: ${REDIS_POOL_MAX_WAIT:5000ms}
+
+  mail:
+    host: ${MAIL_HOST:smtp.qq.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:your-email@example.com}
+    password: ${MAIL_PASSWORD:change-me}
+    protocol: ${MAIL_PROTOCOL:smtp}
+    test-connection: false
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    default-statement-timeout: 30
+    default-fetch-size: 100
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      update-strategy: not_null
+      insert-strategy: not_null
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.familytree.entity
+  configuration-properties:
+    charset: utf8mb4
+
+logging:
+  level:
+    com.familytree: info
+    org.springframework.security: warn
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: ${LOG_FILE_NAME:logs/family-tree.log}
+    max-size: ${LOG_FILE_MAX_SIZE:20MB}
+    max-history: ${LOG_FILE_MAX_HISTORY:7}
+
+familytree:
+  jwt:
+    secret: ${JWT_SECRET:change-me-before-production}
+    expiration: ${JWT_EXPIRATION:604800000}
+    refresh-expiration: ${JWT_REFRESH_EXPIRATION:1209600000}
+
+  wechat:
+    miniapp:
+      app-id: ${WECHAT_MINIAPP_APP_ID:YOUR_MINIAPP_APP_ID}
+      secret: ${WECHAT_MINIAPP_SECRET:YOUR_MINIAPP_SECRET}
+      token-url: ${WECHAT_MINIAPP_TOKEN_URL:https://api.weixin.qq.com/sns/jscode2session}
+    subscribe:
+      family-event:
+        mode: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_MODE:one_time}
+        default-template: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_DEFAULT_TEMPLATE:general}
+        event-routes:
+          "[节日祝福]": ${WECHAT_SUBSCRIBE_FAMILY_EVENT_ROUTE_FESTIVAL:festival}
+          "[婚礼通知]": ${WECHAT_SUBSCRIBE_FAMILY_EVENT_ROUTE_WEDDING:wedding}
+          "[祭祀活动]": ${WECHAT_SUBSCRIBE_FAMILY_EVENT_ROUTE_SACRIFICE:sacrifice}
+        templates:
+          general:
+            title: 通用家族活动提醒
+            template-id: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_TEMPLATE_GENERAL:YOUR_FAMILY_EVENT_TEMPLATE_GENERAL}
+            page: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_PAGE_GENERAL:pages/notification/history/history}
+            keys:
+              event-type: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_KEY_GENERAL_EVENT_TYPE:thing1}
+              member-name: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_KEY_GENERAL_MEMBER_NAME:}
+              event-time: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_KEY_GENERAL_EVENT_TIME:time2}
+              location: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_KEY_GENERAL_LOCATION:thing3}
+              remark: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_KEY_GENERAL_REMARK:}
+          sacrifice:
+            title: 祭祀日期提醒
+            template-id: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_TEMPLATE_SACRIFICE:YOUR_FAMILY_EVENT_TEMPLATE_SACRIFICE}
+            page: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_PAGE_SACRIFICE:pages/notification/history/history}
+            keys:
+              event-type: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_KEY_SACRIFICE_EVENT_TYPE:thing3}
+              member-name: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_KEY_SACRIFICE_MEMBER_NAME:thing4}
+              event-time: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_KEY_SACRIFICE_EVENT_TIME:time1}
+              location: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_KEY_SACRIFICE_LOCATION:thing2}
+              remark: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_KEY_SACRIFICE_REMARK:}
+          wedding:
+            title: 婚礼通知
+            template-id: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_TEMPLATE_WEDDING:YOUR_FAMILY_EVENT_TEMPLATE_WEDDING}
+            page: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_PAGE_WEDDING:pages/notification/history/history}
+            keys:
+              event-type: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_KEY_WEDDING_EVENT_TYPE:thing1}
+              member-name: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_KEY_WEDDING_MEMBER_NAME:}
+              event-time: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_KEY_WEDDING_EVENT_TIME:time2}
+              location: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_KEY_WEDDING_LOCATION:thing4}
+              remark: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_KEY_WEDDING_REMARK:thing3}
+          festival:
+            active: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_TEMPLATE_FESTIVAL_ACTIVE:true}
+            title: 节日祝福
+            template-id: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_TEMPLATE_FESTIVAL:YOUR_FAMILY_EVENT_TEMPLATE_FESTIVAL}
+            page: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_PAGE_FESTIVAL:pages/notification/history/history}
+            keys:
+              event-type: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_KEY_FESTIVAL_EVENT_TYPE:thing1}
+              member-name: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_KEY_FESTIVAL_MEMBER_NAME:thing4}
+              event-time: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_KEY_FESTIVAL_EVENT_TIME:time2}
+              location: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_KEY_FESTIVAL_LOCATION:thing3}
+              remark: ${WECHAT_SUBSCRIBE_FAMILY_EVENT_KEY_FESTIVAL_REMARK:thing5}
+
+  cos:
+    secret-id: ${TENCENT_COS_SECRET_ID:YOUR_TENCENT_COS_SECRET_ID}
+    secret-key: ${TENCENT_COS_SECRET_KEY:YOUR_TENCENT_COS_SECRET_KEY}
+    region: ${TENCENT_COS_REGION:ap-shanghai}
+    bucket: ${TENCENT_COS_BUCKET:your-bucket-appid}
+    cdn-url: ${TENCENT_COS_CDN_URL:https://example.com}
+    max-file-size: ${TENCENT_COS_MAX_FILE_SIZE:10485760}
+    allowed-types: ${TENCENT_COS_ALLOWED_TYPES:jpg,jpeg,png,gif,pdf,doc,docx}
+
+  upload:
+    temp-path: ${UPLOAD_TEMP_PATH:/tmp/familytree}
+    max-size: ${UPLOAD_MAX_SIZE:10485760}
+
+  cache:
+    user-info: ${CACHE_USER_INFO_SECONDS:3600}
+    family-members: ${CACHE_FAMILY_MEMBERS_SECONDS:1800}
+    family-stats: ${CACHE_FAMILY_STATS_SECONDS:900}
+
+  business:
+    max-family-members: ${BUSINESS_MAX_FAMILY_MEMBERS:1000}
+    max-photos-per-user: ${BUSINESS_MAX_PHOTOS_PER_USER:100}
+    invite-code-expire: ${BUSINESS_INVITE_CODE_EXPIRE_SECONDS:86400}

@@ -1,0 +1,124 @@
+<view class="container gradient-bg">
+  <view class="card">
+    <text class="title">选择“我是谁”</text>
+    <text class="tip" wx:if="{{force}}">首次登录需要先绑定你的家族身份。</text>
+    <text class="tip" wx:elif="{{canChange}}">请先选择身份类型，再进入对应的绑定流程。</text>
+    <text class="tip warning" wx:else>当前账号身份暂不可修改。</text>
+
+    <view class="tip-banner warning" wx:if="{{bindingStatus === 'PENDING'}}">
+      <text>当前认领申请审核中。{{readOnlyReason || '审核通过前账号仅可只读浏览。'}}</text>
+      <text wx:if="{{currentDisplayMemberName}}">当前只读落点：{{currentDisplayMemberName}}</text>
+    </view>
+
+    <view class="tip-banner" wx:if="{{bindingStatus === 'REJECTED' && bindingRemark}}">
+      <text>上次认领申请未通过：{{bindingRemark}}</text>
+    </view>
+
+    <view class="current-bind" wx:if="{{currentBindText}}">
+      <text>{{currentBindText}}</text>
+    </view>
+
+    <view class="entry-card">
+      <view class="entry-head">
+        <text class="entry-title">先选身份类型</text>
+        <text class="entry-desc">首次绑定不预选；已有配偶身份会默认回到配偶入口，其他情况默认直系入口。</text>
+      </view>
+
+      <view class="entry-actions">
+        <view class="entry-btn {{bindEntryType === 'direct' ? 'active' : ''}}" bindtap="chooseBindEntry" data-type="direct">
+          <text class="entry-btn-title">孙家直系</text>
+          <text class="entry-btn-desc">搜索本人、从列表认领，或从家族树定位自己</text>
+        </view>
+        <view class="entry-btn {{bindEntryType === 'spouse' ? 'active' : ''}}" bindtap="chooseBindEntry" data-type="spouse">
+          <text class="entry-btn-title">配偶</text>
+          <text class="entry-btn-desc">先选择丈夫，再填写本人姓名完成挂靠绑定</text>
+        </view>
+      </view>
+
+      <view class="entry-empty" wx:if="{{!bindEntryType}}">
+        <text>请选择上方其中一种身份入口后继续。</text>
+      </view>
+    </view>
+
+    <view class="entry-panel" wx:if="{{bindEntryType === 'direct'}}">
+      <view class="panel-head">
+        <text class="panel-title">孙家直系绑定</text>
+        <text class="panel-desc">支持搜索、列表认领，也可以直接去家族树选本人。</text>
+      </view>
+
+      <view class="search-box">
+        <input class="search-input" placeholder="搜索姓名或挂靠成员" bindinput="onSearchInput" value="{{keyword}}" />
+        <button class="search-clear" wx:if="{{keyword}}" bindtap="clearSearch">清空</button>
+      </view>
+
+      <view class="helper-actions">
+        <view class="helper-btn secondary" bindtap="openSelfTreeSelector">从家族树选择本人</view>
+        <view class="helper-btn" bindtap="goApply">列表里没有我，去申请加入家族</view>
+      </view>
+
+      <text class="quick-hint">快捷列表仅展示可绑定成员；如需按家族关系定位，可从家族树进入总代总览后选择。</text>
+
+      <view class="loading" wx:if="{{loading}}">加载中...</view>
+
+      <view class="member-list" wx:else>
+        <view
+          class="member-item {{!canChange ? 'disabled' : ''}}"
+          wx:for="{{filteredMembers}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          data-label="{{item.displayTitle}}"
+          data-hidden="{{item.hidden ? 1 : 0}}"
+          data-gender="{{item.gender}}"
+          bindtap="selectMember"
+        >
+          <view class="member-main">
+            <view class="member-title-row">
+              <text class="member-name">{{item.displayTitle}}</text>
+              <text class="member-badge" wx:if="{{item.hidden}}">配偶身份</text>
+            </view>
+            <text class="member-meta">{{item.metaText}}</text>
+          </view>
+          <text class="pick-text">
+            {{!canChange ? '待处理' : (item.hidden ? '立即绑定' : '提交认领')}}
+          </text>
+        </view>
+
+        <view class="empty-state" wx:if="{{filteredMembers.length === 0}}">
+          <text class="empty-text">未找到匹配成员</text>
+          <view class="helper-btn empty-action" bindtap="goApply">去申请加入家族</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="entry-panel spouse-panel" wx:elif="{{bindEntryType === 'spouse'}}">
+      <view class="panel-head">
+        <text class="panel-title">配偶绑定</text>
+        <text class="panel-desc">先选丈夫，再填写本人姓名。快捷下拉只展示在世丈夫，也可以从家族树里选。</text>
+      </view>
+
+      <button class="form-secondary-btn" bindtap="openSpouseOwnerTreeSelector">从家族树选择丈夫</button>
+
+      <view class="form-field">
+        <text class="form-label">丈夫快捷下拉</text>
+        <picker wx:if="{{spouseOwnerOptions.length}}" mode="selector" range="{{spouseOwnerLabels}}" value="{{externalOwnerIndex}}" bindchange="onExternalOwnerChange">
+          <view class="picker-value {{externalOwnerMemberId ? '' : 'placeholder'}}">
+            {{externalOwnerDisplayName || '请选择丈夫成员'}}
+          </view>
+        </picker>
+        <view wx:else class="picker-value placeholder" bindtap="openSpouseOwnerTreeSelector">
+          {{externalOwnerDisplayName || '暂无可快捷选择的丈夫，请从家族树选择'}}
+        </view>
+        <text class="form-helper">如需选择已故丈夫，请使用“从家族树选择丈夫”。</text>
+      </view>
+
+      <view class="form-field">
+        <text class="form-label">本人姓名</text>
+        <input class="form-input" placeholder="请输入你的姓名" maxlength="20" value="{{externalSpouseName}}" bindinput="onExternalSpouseNameInput" />
+      </view>
+
+      <button class="submit-btn" loading="{{submittingExternalSpouse}}" disabled="{{submittingExternalSpouse}}" bindtap="submitExternalSpouseBinding">
+        提交配偶绑定
+      </button>
+    </view>
+  </view>
+</view>

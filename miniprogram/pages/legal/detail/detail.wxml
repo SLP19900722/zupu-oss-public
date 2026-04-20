@@ -1,0 +1,56 @@
+<view class="legal-page" wx:if="{{document}}">
+  <view class="hero-card">
+    <text class="hero-kicker">合规说明</text>
+    <text class="hero-title">{{document.title}}</text>
+    <text class="hero-meta">更新日期：{{document.updatedAt}}</text>
+    <text class="hero-summary">{{document.summary}}</text>
+  </view>
+
+  <view class="highlight-grid" wx:if="{{document.highlights && document.highlights.length}}">
+    <view
+      class="highlight-card"
+      wx:for="{{document.highlights}}"
+      wx:key="label"
+      wx:for-item="highlight"
+    >
+      <text class="highlight-label">{{highlight.label}}</text>
+      <text class="highlight-value">{{highlight.value}}</text>
+    </view>
+  </view>
+
+  <view
+    class="section-card"
+    wx:for="{{document.sections}}"
+    wx:key="heading"
+    wx:for-item="section"
+    wx:for-index="sectionIndex"
+  >
+    <view class="section-heading-row">
+      <text class="section-index">{{sectionIndex + 1}}</text>
+      <text class="section-heading">{{section.heading}}</text>
+    </view>
+
+    <block wx:if="{{section.paragraphs && section.paragraphs.length}}">
+      <text
+        class="section-paragraph"
+        wx:for="{{section.paragraphs}}"
+        wx:key="*this"
+        wx:for-item="paragraph"
+      >
+        {{paragraph}}
+      </text>
+    </block>
+
+    <view class="bullet-list" wx:if="{{section.bullets && section.bullets.length}}">
+      <view
+        class="bullet-item"
+        wx:for="{{section.bullets}}"
+        wx:key="*this"
+        wx:for-item="bullet"
+      >
+        <text class="bullet-dot"></text>
+        <text class="bullet-text">{{bullet}}</text>
+      </view>
+    </view>
+  </view>
+</view>

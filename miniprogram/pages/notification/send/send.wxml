@@ -1,0 +1,177 @@
+<view class="send-page">
+  <view class="hero-card">
+    <text class="hero-kicker">Family Notice</text>
+    <text class="hero-title">发布家族通知</text>
+    <text class="hero-desc">先填通知内容，再保存草稿。发布后站内可见；微信只提醒已绑定身份且已开启提醒的人。</text>
+  </view>
+
+  <view class="scope-card">
+    <text class="scope-title">这条通知会发给谁</text>
+    <view class="scope-row">
+      <text class="scope-label">站内通知</text>
+      <text class="scope-value">发布后，所有登录成员都能在通知历史里看到</text>
+    </view>
+    <view class="scope-row">
+      <text class="scope-label">微信提醒</text>
+      <text class="scope-value">只提醒已绑定身份且已开启当前模板提醒的人</text>
+    </view>
+    <view class="scope-row highlight">
+      <text class="scope-label">当前规则</text>
+      <text class="scope-value">第一版暂不支持手动勾选个人，范围固定。</text>
+    </view>
+  </view>
+
+  <view class="form-card">
+    <text class="section-title">通知内容</text>
+    <text class="history-desc" wx:if="{{editingDraftId}}">正在编辑草稿 #{{editingDraftId}}，保存后会重新计算微信提醒人数。</text>
+
+    <view class="field-block">
+      <text class="field-label">事件类型</text>
+      <view class="chip-row">
+        <view
+          class="type-chip {{form.eventType === item ? 'active' : ''}}"
+          wx:for="{{eventTypeOptions}}"
+          wx:key="*this"
+          data-value="{{item}}"
+          bindtap="selectEventType"
+        >
+          <text class="type-chip-text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="field-block">
+      <text class="field-label">涉及成员</text>
+      <text class="history-desc">只用于通知内容展示，不影响接收范围。</text>
+      <input class="field-input" placeholder="例如：张三、李四一家" value="{{form.memberName}}" data-field="memberName" bindinput="onFieldInput" maxlength="32" />
+    </view>
+
+    <view class="field-block">
+      <text class="field-label">时间</text>
+      <view class="picker-row">
+        <picker class="picker-col" mode="date" value="{{form.eventDate}}" bindchange="onEventDateChange">
+          <view class="picker-field">
+            <text class="picker-field-text {{form.eventDate ? '' : 'placeholder-text'}}">{{form.eventDate || '选择日期'}}</text>
+          </view>
+        </picker>
+        <picker class="picker-col time" mode="time" value="{{form.eventClock}}" bindchange="onEventClockChange">
+          <view class="picker-field">
+            <text class="picker-field-text {{form.eventClock ? '' : 'placeholder-text'}}">{{form.eventClock || '选择时间'}}</text>
+          </view>
+        </picker>
+      </view>
+      <text class="history-desc" wx:if="{{form.eventTime}}">当前时间：{{form.eventTime}}</text>
+    </view>
+
+    <view class="field-block">
+      <text class="field-label">地点 / 摘要</text>
+      <input class="field-input" placeholder="例如：祖祠广场，欢迎家族成员参加" value="{{form.location}}" data-field="location" bindinput="onFieldInput" maxlength="64" />
+    </view>
+
+    <view class="field-block">
+      <text class="field-label">备注</text>
+      <input class="field-input" placeholder="选填，例如：请提前半小时到场" value="{{form.remark}}" data-field="remark" bindinput="onFieldInput" maxlength="64" />
+    </view>
+
+    <view class="primary-btn" bindtap="submitDraft">
+      <text class="primary-btn-text">{{submitting ? (editingDraftId ? '正在保存修改...' : '正在保存草稿...') : (editingDraftId ? '保存修改并重新计算' : '保存草稿并计算提醒人数')}}</text>
+    </view>
+
+    <view class="secondary-btn" wx:if="{{editingDraftId}}" bindtap="cancelEditingDraft">
+      <text class="secondary-btn-text">取消编辑</text>
+    </view>
+
+    <view class="secondary-btn" bindtap="goPublicHistory">
+      <text class="secondary-btn-text">预览成员端通知页</text>
+    </view>
+  </view>
+
+  <view class="draft-card" wx:if="{{currentDraft}}">
+    <view class="draft-head">
+      <view>
+        <text class="section-title">待发送通知</text>
+        <text class="draft-status">{{currentDraft.statusText}}</text>
+      </view>
+      <view class="draft-pill">
+        <text class="draft-pill-text">预计微信提醒 {{currentDraft.estimatedRecipientCount}} 人</text>
+      </view>
+    </view>
+
+    <text class="draft-title">{{currentDraft.eventType}} · {{currentDraft.memberName}}</text>
+    <text class="draft-meta">{{currentDraft.eventTime}}</text>
+    <text class="draft-desc">{{currentDraft.location}}</text>
+    <text class="draft-desc" wx:if="{{currentDraft.remark}}">{{currentDraft.remark}}</text>
+
+    <view class="draft-actions" wx:if="{{currentDraft.canSend}}">
+      <view class="secondary-btn compact draft-action-half" bindtap="editCurrentDraft">
+        <text class="secondary-btn-text">编辑草稿</text>
+      </view>
+      <view class="primary-btn compact" bindtap="sendDraft">
+        <text class="primary-btn-text">{{sendingId === currentDraft.id ? '发布中...' : '发布通知'}}</text>
+      </view>
+    </view>
+
+    <view class="draft-actions" wx:if="{{isSuperAdmin && currentDraft.canDelete}}">
+      <view class="danger-btn compact draft-action-half" bindtap="deleteCurrentDraft">
+        <text class="danger-btn-text">{{deletingId === currentDraft.id ? '删除中...' : '删除通知'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="history-card">
+    <view class="history-head">
+      <view>
+        <text class="section-title">通知记录</text>
+        <text class="history-desc">这里看草稿、发布结果和失败原因。</text>
+      </view>
+      <view class="mini-btn" bindtap="loadHistory">
+        <text class="mini-btn-text">刷新</text>
+      </view>
+    </view>
+
+    <view class="history-list" wx:if="{{history.length > 0}}">
+      <view class="history-item" wx:for="{{history}}" wx:key="id">
+        <view class="history-item-head">
+          <view>
+            <text class="history-item-title">{{item.eventType}} · {{item.memberName}}</text>
+            <text class="history-item-meta">{{item.eventTime}}</text>
+          </view>
+          <text class="history-item-status">{{item.statusText}}</text>
+        </view>
+
+        <text class="history-item-desc">{{item.location}}</text>
+        <text class="history-item-desc" wx:if="{{item.remark}}">{{item.remark}}</text>
+
+        <view class="history-tags">
+          <text class="history-tag">预计微信提醒 {{item.estimatedRecipientCount}} 人</text>
+          <text class="history-tag subtle">成功 {{item.successCount}} 人</text>
+          <text class="history-tag subtle">失败 {{item.failureCount}} 人</text>
+        </view>
+
+        <text class="history-failure" wx:if="{{item.failureReasons.length > 0}}">
+          最近失败：{{item.failureReasons[0].errorMessage || '微信接口返回失败'}}
+        </text>
+
+        <view class="history-item-actions" wx:if="{{item.canSend}}">
+          <view class="mini-secondary-btn" data-id="{{item.id}}" bindtap="editHistoryNotification">
+            <text class="mini-secondary-btn-text">编辑草稿</text>
+          </view>
+          <view class="mini-primary-btn" data-id="{{item.id}}" bindtap="sendHistoryNotification">
+            <text class="mini-primary-btn-text">{{sendingId === item.id ? '发布中...' : '发布这条通知'}}</text>
+          </view>
+        </view>
+
+        <view class="history-item-actions" wx:if="{{isSuperAdmin && item.canDelete}}">
+          <view class="mini-danger-btn" data-id="{{item.id}}" bindtap="deleteHistoryNotification">
+            <text class="mini-danger-btn-text">{{deletingId === item.id ? '删除中...' : '删除通知'}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty-card" wx:else>
+      <text class="empty-title">还没有通知记录</text>
+      <text class="empty-desc">创建第一条家族通知后，这里会显示草稿、发送结果和失败摘要。</text>
+    </view>
+  </view>
+</view>

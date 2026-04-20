@@ -1,0 +1,12 @@
+backend/target/
+backend/logs/
+backend/spring-boot-run.log
+backend/mvn_package*.txt
+tmp/
+miniprogram/project.private.config.json
+.env
+.env.*
+!.env.example
+.codex-temp/
+*.log
+*.gz

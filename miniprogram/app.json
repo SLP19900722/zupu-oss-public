@@ -1,0 +1,29 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/login/login",
+    "pages/legal/detail/detail",
+    "pages/gallery/upload/upload",
+    "pages/gallery/manage/manage",
+    "pages/tree/tree",
+    "pages/member/select-self/select-self",
+    "pages/member/list/list",
+    "pages/member/detail/detail",
+    "pages/member/add/add",
+    "pages/audit/list/list",
+    "pages/audit/user-binding/user-binding",
+    "pages/notification/send/send",
+    "pages/notification/history/history",
+    "pages/profile/profile"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#8F1F1F",
+    "navigationBarTitleText": "家族族谱",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#F6EEE2"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

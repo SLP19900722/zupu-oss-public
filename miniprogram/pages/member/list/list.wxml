@@ -1,0 +1,115 @@
+<view class="member-page">
+  <view class="hero-card">
+    <text class="hero-kicker">Clan Directory</text>
+    <text class="hero-title">成员名录</text>
+    <text class="hero-desc">用更清晰的卡片浏览家族成员，快速查看世代、职业与现居信息。</text>
+
+    <view class="hero-stats">
+      <view class="hero-stat">
+        <text class="hero-stat-value">{{stats.total}}</text>
+        <text class="hero-stat-label">展示成员</text>
+      </view>
+
+      <view class="hero-divider"></view>
+
+      <view class="hero-stat">
+        <text class="hero-stat-value">{{stats.living}}</text>
+        <text class="hero-stat-label">在世成员</text>
+      </view>
+
+      <view class="hero-divider"></view>
+
+      <view class="hero-stat">
+        <text class="hero-stat-value">{{stats.generations}}</text>
+        <text class="hero-stat-label">已录世代</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="search-card">
+    <view class="search-shell">
+      <view class="search-icon">
+        <view class="search-circle"></view>
+        <view class="search-line"></view>
+      </view>
+
+      <input
+        class="search-input"
+        placeholder="搜索姓名、职业或现居地"
+        value="{{keyword}}"
+        bindinput="onSearchInput"
+        bindconfirm="onSearch"
+        confirm-type="search"
+      />
+
+      <view class="search-clear" wx:if="{{keyword}}" bindtap="clearSearch">
+        <text class="search-clear-text">清空</text>
+      </view>
+
+      <view class="search-btn" bindtap="onSearch">
+        <text class="search-btn-text">搜索</text>
+      </view>
+    </view>
+
+    <text class="result-text">{{resultText}}</text>
+  </view>
+
+  <view class="skeleton-list" wx:if="{{loading}}">
+    <view class="skeleton-card" wx:for="{{[1,2,3]}}" wx:key="*this">
+      <view class="skeleton-avatar"></view>
+      <view class="skeleton-copy">
+        <view class="skeleton-line wide"></view>
+        <view class="skeleton-line"></view>
+        <view class="skeleton-line short"></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="member-list" wx:elif="{{members.length > 0}}">
+    <view class="member-card tone-{{item.accent}}" wx:for="{{members}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
+      <view class="member-avatar-shell tone-{{item.accent}}">
+        <image class="member-avatar" wx:if="{{item.avatarUrl}}" src="{{item.avatarUrl}}" mode="aspectFill"></image>
+        <text class="member-initial" wx:else>{{item.initial}}</text>
+      </view>
+
+      <view class="member-main">
+        <view class="member-topline">
+          <view class="member-heading">
+            <text class="member-name">{{item.name}}</text>
+            <text class="member-generation">{{item.generationText}}</text>
+          </view>
+
+          <text class="member-status {{item.statusClass}}">{{item.statusText}}</text>
+        </view>
+
+        <text class="member-meta">{{item.genderText}} · {{item.birthText}}</text>
+
+        <view class="member-tags">
+          <text class="member-tag">{{item.occupationText}}</text>
+          <text class="member-tag muted">{{item.locationText}}</text>
+        </view>
+      </view>
+
+      <text class="member-arrow">→</text>
+    </view>
+  </view>
+
+  <view class="empty-card" wx:else>
+    <view class="empty-mark"></view>
+    <text class="empty-title">{{keyword ? '没有找到相关成员' : '暂时还没有成员数据'}}</text>
+    <text class="empty-desc">{{keyword ? '可以换个关键词继续搜索，或清空后查看全部成员。' : '录入第一位成员后，这里会自动形成可浏览的家族名录。'}}</text>
+    <view class="empty-btn" bindtap="handleEmptyAction">
+      <text class="empty-btn-text">{{keyword ? '查看全部成员' : '录入第一位成员'}}</text>
+    </view>
+  </view>
+
+  <view class="floating-add" bindtap="goAdd">
+    <view class="floating-plus">
+      <view class="plus-line vertical"></view>
+      <view class="plus-line horizontal"></view>
+    </view>
+    <text class="floating-text">录入成员</text>
+  </view>
+
+  <view class="bottom-space"></view>
+</view>

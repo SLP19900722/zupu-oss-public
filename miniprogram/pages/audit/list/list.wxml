@@ -1,0 +1,239 @@
+<view class="audit-page">
+  <view class="hero-card">
+    <text class="hero-kicker">{{isSuperAdmin ? 'Audit & Roles' : 'Audit Center'}}</text>
+    <text class="hero-title">{{activeTab === 'users' ? '管理员设置' : '审核中心'}}</text>
+    <text class="hero-desc" wx:if="{{activeTab === 'users'}}">集中查看账号角色，直接切换普通用户与管理员权限，超级管理员本人和其他超级管理员保持锁定。</text>
+    <text class="hero-desc" wx:else>集中处理成员新增申请与男性首次身份认领申请，统一完成管理员审核。</text>
+
+    <view class="hero-stats" wx:if="{{activeTab === 'pending'}}">
+      <view class="hero-stat focus">
+        <text class="hero-stat-value">{{stats.total}}</text>
+        <text class="hero-stat-label">待处理</text>
+      </view>
+
+      <view class="hero-stat">
+        <text class="hero-stat-value">{{stats.member}}</text>
+        <text class="hero-stat-label">成员申请</text>
+      </view>
+
+      <view class="hero-stat">
+        <text class="hero-stat-value">{{stats.binding}}</text>
+        <text class="hero-stat-label">身份认领</text>
+      </view>
+    </view>
+
+    <view class="hero-stats" wx:else>
+      <view class="hero-stat focus">
+        <text class="hero-stat-value">{{userStats.total}}</text>
+        <text class="hero-stat-label">账号总数</text>
+      </view>
+
+      <view class="hero-stat">
+        <text class="hero-stat-value">{{userStats.admin}}</text>
+        <text class="hero-stat-label">管理员</text>
+      </view>
+
+      <view class="hero-stat">
+        <text class="hero-stat-value">{{userStats.normal}}</text>
+        <text class="hero-stat-label">普通用户</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="mode-tabs" wx:if="{{isSuperAdmin}}">
+    <view class="mode-tab {{activeTab === 'pending' ? 'active' : ''}}" data-tab="pending" bindtap="switchTab">
+      <text class="mode-tab-text">待审核</text>
+    </view>
+    <view class="mode-tab {{activeTab === 'users' ? 'active' : ''}}" data-tab="users" bindtap="switchTab">
+      <text class="mode-tab-text">管理员设置</text>
+    </view>
+  </view>
+
+  <view class="publish-entry-card" wx:if="{{isAdmin}}">
+    <view class="publish-entry-copy">
+      <text class="publish-entry-kicker">Family Notice</text>
+      <text class="publish-entry-title">发布家族通知</text>
+      <text class="publish-entry-desc">创建婚丧嫁娶、祭祖聚会等家族大事通知，先预估可触达人数，再确认发送。</text>
+    </view>
+
+    <view class="publish-entry-btn" bindtap="goPublishFamilyEvent">
+      <text class="publish-entry-btn-text">进入发布页</text>
+    </view>
+  </view>
+
+  <view class="panel-card">
+    <view class="panel-head">
+      <view class="panel-copy">
+        <text class="panel-title">{{activeTab === 'users' ? '管理员权限' : '待审核申请'}}</text>
+        <text class="panel-desc">{{activeTab === 'users' ? userSummaryText : summaryText}}</text>
+      </view>
+
+      <view class="panel-refresh" bindtap="refreshCurrentTab">
+        <text class="panel-refresh-text">刷新</text>
+      </view>
+    </view>
+
+    <block wx:if="{{activeTab === 'pending'}}">
+      <view class="skeleton-list" wx:if="{{loading}}">
+        <view class="skeleton-card" wx:for="{{[1,2,3]}}" wx:key="*this">
+          <view class="skeleton-avatar"></view>
+          <view class="skeleton-copy">
+            <view class="skeleton-line wide"></view>
+            <view class="skeleton-line"></view>
+            <view class="skeleton-line short"></view>
+          </view>
+        </view>
+      </view>
+
+      <view class="audit-list" wx:elif="{{pending.length > 0}}">
+        <view class="audit-card tone-{{item.accent}}" wx:for="{{pending}}" wx:key="id">
+          <view class="audit-avatar-shell tone-{{item.accent}}">
+            <text class="audit-initial">{{item.initial}}</text>
+          </view>
+
+          <view class="audit-main">
+            <view class="audit-topline">
+              <view class="audit-heading">
+                <text class="audit-name">{{item.displayName}}</text>
+                <text class="audit-generation">{{item.generationText}}</text>
+              </view>
+              <text class="audit-status">{{item.typeBadge}}</text>
+            </view>
+
+            <text class="audit-meta">{{item.genderText}} · {{item.birthText}}</text>
+
+            <view class="audit-tags">
+              <text class="audit-tag">{{item.occupationText}}</text>
+              <text class="audit-tag muted">{{item.locationText}}</text>
+            </view>
+
+            <text class="audit-note">{{item.noteText}}</text>
+
+            <view class="audit-actions">
+              <view class="action-btn reject" data-id="{{item.reviewId}}" data-type="{{item.targetType}}" bindtap="reject">
+                <text class="action-text reject-text">驳回</text>
+              </view>
+
+              <view class="action-btn approve" data-id="{{item.reviewId}}" data-type="{{item.targetType}}" bindtap="approve">
+                <text class="action-text">通过</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="empty-card" wx:else>
+        <view class="empty-mark"></view>
+        <text class="empty-title">当前没有待审核申请</text>
+        <text class="empty-desc">新的成员申请或身份认领提交后，会自动出现在这里。</text>
+      </view>
+    </block>
+
+    <block wx:else>
+      <view class="admin-toolbar">
+        <view class="search-shell">
+          <input
+            class="search-input"
+            placeholder="搜索成员名、账号名或手机号"
+            placeholder-class="search-placeholder"
+            value="{{userKeyword}}"
+            bindinput="onUserKeywordInput"
+            bindconfirm="onUserKeywordConfirm"
+            confirm-type="search"
+          />
+          <view class="search-clear" wx:if="{{userKeyword}}" bindtap="clearUserKeyword">
+            <text class="search-clear-text">清空</text>
+          </view>
+          <view class="search-action" bindtap="onUserKeywordConfirm">
+            <text class="search-action-text">搜索</text>
+          </view>
+        </view>
+
+        <view class="filter-row">
+          <view class="filter-chip {{userRoleFilter === '' ? 'active' : ''}}" data-role="" bindtap="selectRoleFilter">
+            <text class="filter-chip-text">全部</text>
+          </view>
+          <view class="filter-chip {{userRoleFilter === 1 ? 'active' : ''}}" data-role="1" bindtap="selectRoleFilter">
+            <text class="filter-chip-text">管理员</text>
+          </view>
+          <view class="filter-chip {{userRoleFilter === 0 ? 'active' : ''}}" data-role="0" bindtap="selectRoleFilter">
+            <text class="filter-chip-text">普通用户</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="skeleton-list" wx:if="{{userLoading}}">
+        <view class="skeleton-card" wx:for="{{[1,2,3]}}" wx:key="*this">
+          <view class="skeleton-avatar"></view>
+          <view class="skeleton-copy">
+            <view class="skeleton-line wide"></view>
+            <view class="skeleton-line"></view>
+            <view class="skeleton-line short"></view>
+          </view>
+        </view>
+      </view>
+
+      <view class="audit-list" wx:elif="{{adminUsers.length > 0}}">
+        <view class="audit-card tone-{{item.accent}}" wx:for="{{adminUsers}}" wx:key="id">
+          <view class="audit-avatar-shell tone-{{item.accent}}">
+            <text class="audit-initial">{{item.initial}}</text>
+          </view>
+
+          <view class="audit-main">
+            <view class="audit-topline">
+              <view class="audit-heading">
+                <text class="audit-name">{{item.displayName}}</text>
+                <text class="audit-meta-sub" wx:if="{{item.realNameText}}">{{item.realNameText}}</text>
+              </view>
+
+              <view class="badge-row">
+                <text class="audit-status role-{{item.roleTone}}">{{item.roleBadge}}</text>
+                <text class="audit-status subtle status-{{item.statusTone}}">{{item.statusText}}</text>
+              </view>
+            </view>
+
+            <text class="audit-meta">{{item.phoneText}}</text>
+
+            <view class="audit-tags">
+              <text class="audit-tag muted">{{item.noteText}}</text>
+              <text class="audit-tag" wx:if="{{item.disabledText}}">{{item.disabledText}}</text>
+            </view>
+
+            <view class="audit-actions">
+              <view
+                class="action-btn secondary"
+                data-id="{{item.id}}"
+                data-name="{{item.accountDisplayName || item.displayName}}"
+                bindtap="goManageBinding"
+              >
+                <text class="action-text secondary-text">身份改绑</text>
+              </view>
+
+              <view
+                class="action-btn {{item.disabled ? 'disabled' : item.actionTone}}"
+                data-id="{{item.id}}"
+                data-role="{{item.nextRole}}"
+                data-name="{{item.displayName}}"
+                data-action="{{item.actionText}}"
+                data-disabled="{{item.disabled}}"
+                bindtap="toggleAdminRole"
+              >
+                <text class="action-text {{item.actionTone === 'reject' ? 'reject-text' : ''}} {{item.disabled ? 'disabled-text' : ''}}">
+                  {{item.disabled ? item.disabledText : item.actionText}}
+                </text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="empty-card" wx:else>
+        <view class="empty-mark"></view>
+        <text class="empty-title">当前没有可管理账号</text>
+        <text class="empty-desc">试试切换筛选条件，或搜索昵称、真实姓名、手机号。</text>
+      </view>
+    </block>
+  </view>
+
+  <view class="bottom-space"></view>
+</view>

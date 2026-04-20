@@ -1,0 +1,121 @@
+.profile-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f6eee2 0%, #fbf7f1 100%);
+  padding: 28rpx;
+}
+
+.profile-card,
+.section-card {
+  border-radius: 30rpx;
+  border: 1rpx solid rgba(172, 96, 68, 0.12);
+  box-shadow: 0 18rpx 42rpx rgba(79, 50, 32, 0.08);
+}
+
+.profile-card {
+  padding: 38rpx 28rpx;
+  background: linear-gradient(135deg, #8f1f1f 0%, #bc5640 60%, #c79a47 100%);
+  text-align: center;
+}
+
+.avatar-shell {
+  width: 150rpx;
+  height: 150rpx;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: rgba(255, 252, 247, 0.2);
+  border: 2rpx solid rgba(255, 244, 230, 0.38);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+}
+
+.avatar-text {
+  color: #fff8f0;
+  font-size: 60rpx;
+  font-weight: 700;
+}
+
+.profile-name {
+  display: block;
+  margin-top: 22rpx;
+  color: #fff8f0;
+  font-size: 38rpx;
+  font-weight: 700;
+}
+
+.profile-role {
+  display: block;
+  margin-top: 10rpx;
+  color: rgba(255, 246, 238, 0.92);
+  font-size: 24rpx;
+}
+
+.section-card {
+  margin-top: 24rpx;
+  padding: 28rpx 24rpx;
+  background: rgba(255, 252, 247, 0.96);
+}
+
+.section-title {
+  display: block;
+  color: #2f241b;
+  font-size: 32rpx;
+  font-weight: 700;
+}
+
+.action-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 0;
+}
+
+.action-item + .action-item {
+  border-top: 1rpx solid rgba(193, 161, 123, 0.16);
+}
+
+.action-copy {
+  flex: 1;
+}
+
+.action-title {
+  display: block;
+  color: #2f241b;
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.action-desc {
+  display: block;
+  margin-top: 8rpx;
+  color: #8f7c6e;
+  font-size: 22rpx;
+  line-height: 1.6;
+}
+
+.action-arrow {
+  color: #c29c79;
+  font-size: 28rpx;
+  margin-left: 12rpx;
+}
+
+.logout-btn {
+  height: 88rpx;
+  margin-top: 22rpx;
+  border-radius: 999rpx;
+  background: rgba(143, 31, 31, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logout-text {
+  color: #8f1f1f;
+  font-size: 28rpx;
+  font-weight: 700;
+}

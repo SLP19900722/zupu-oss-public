@@ -1,0 +1,52 @@
+<view class="history-page">
+  <view class="hero-card" wx:if="{{selectedNotification}}">
+    <text class="hero-kicker">Family Notice</text>
+    <text class="hero-title">{{selectedNotification.eventType}}</text>
+    <text class="hero-desc">{{selectedNotification.memberName}}</text>
+
+    <view class="hero-meta-card">
+      <text class="hero-meta-label">时间</text>
+      <text class="hero-meta-value">{{selectedNotification.eventTime}}</text>
+    </view>
+
+    <view class="hero-meta-card">
+      <text class="hero-meta-label">地点 / 摘要</text>
+      <text class="hero-meta-value">{{selectedNotification.location}}</text>
+    </view>
+
+    <view class="hero-meta-card">
+      <text class="hero-meta-label">补充说明</text>
+      <text class="hero-meta-value">{{selectedNotification.remarkText}}</text>
+    </view>
+  </view>
+
+  <view class="list-card">
+    <view class="list-head">
+      <view>
+        <text class="section-title">最近通知</text>
+        <text class="section-desc">查看最近发布的家族大事通知，点击可切换详情。</text>
+      </view>
+      <view class="mini-btn" bindtap="loadNotifications">
+        <text class="mini-btn-text">刷新</text>
+      </view>
+    </view>
+
+    <view class="notice-list" wx:if="{{notifications.length > 0}}">
+      <view class="notice-item {{selectedNotification && selectedNotification.id === item.id ? 'active' : ''}}" wx:for="{{notifications}}" wx:key="id" data-id="{{item.id}}" bindtap="selectNotification">
+        <view class="notice-item-head">
+          <view>
+            <text class="notice-item-title">{{item.eventType}} · {{item.memberName}}</text>
+            <text class="notice-item-meta">{{item.eventTime}}</text>
+          </view>
+          <text class="notice-item-status">{{item.statusText}}</text>
+        </view>
+        <text class="notice-item-desc">{{item.location}}</text>
+      </view>
+    </view>
+
+    <view class="empty-card" wx:else>
+      <text class="empty-title">暂时还没有可查看的通知</text>
+      <text class="empty-desc">管理员发布家族大事通知后，这里会自动出现最新记录。</text>
+    </view>
+  </view>
+</view>

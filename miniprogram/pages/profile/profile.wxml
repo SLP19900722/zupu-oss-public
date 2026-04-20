@@ -1,0 +1,132 @@
+<view class="profile-page">
+  <view class="profile-card">
+    <view class="avatar-shell">
+      <image class="avatar-image" wx:if="{{userInfo && userInfo.avatarUrl}}" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+      <text class="avatar-text" wx:else>{{userInfo && userInfo.nickName ? userInfo.nickName[0] : '游'}}</text>
+    </view>
+
+    <text class="profile-name">{{userInfo ? userInfo.nickName : '游客模式'}}</text>
+    <text class="profile-role">
+      {{userInfo ? (isSuperAdmin ? '超级管理员账号' : (isAdmin ? '管理员账号' : identityTitle)) : '可先浏览首页内容，登录后再参与家族信息维护'}}
+    </text>
+  </view>
+
+  <view class="section-card" wx:if="{{bindingStatus === 'PENDING'}}">
+    <text class="section-title">认领审核中</text>
+    <text class="action-desc">{{readOnlyReason || '管理员审核通过前，当前账号仅可只读浏览公开内容。'}}</text>
+  </view>
+
+  <view class="section-card" wx:if="{{bindingStatus === 'REJECTED' && bindingRemark}}">
+    <text class="section-title">上次认领未通过</text>
+    <text class="action-desc">{{bindingRemark}}</text>
+  </view>
+
+  <view class="section-card" wx:if="{{isLoggedIn}}">
+    <text class="section-title">身份档案</text>
+
+    <view class="action-item" bindtap="goMyIdentity">
+      <view class="action-copy">
+        <text class="action-title">{{preferredMemberId || displayMemberId ? '查看我的身份档案' : '选择“我是谁”'}}</text>
+        <text class="action-desc" wx:if="{{identityType === 'EXTERNAL_SPOUSE'}}">
+          当前为配偶身份，树上会挂靠到 {{spouseOwnerMemberName || displayMemberName || '关联成员'}} 展示。
+        </text>
+        <text class="action-desc" wx:elif="{{bindingStatus === 'PENDING'}}">
+          当前认领审核中，默认只读落点为 {{displayMemberName || '待审核成员'}}。
+        </text>
+        <text class="action-desc" wx:elif="{{preferredMemberId}}">
+          查看当前账号已绑定的家族成员档案与资料。
+        </text>
+        <text class="action-desc" wx:else>
+          先绑定身份后，才能定位自己的家族档案与默认树节点。
+        </text>
+      </view>
+      <text class="action-arrow">→</text>
+    </view>
+
+    <view class="action-item" wx:if="{{isAdmin || (!preferredMemberId && bindingStatus !== 'PENDING')}}" bindtap="goSelectSelf">
+      <view class="action-copy">
+        <text class="action-title">{{isAdmin ? '重新绑定“我是谁”' : '绑定当前身份'}}</text>
+        <text class="action-desc">{{isAdmin ? '更新当前账号与家族成员身份的绑定关系。' : '首次登录后可在这里补充或重新确认当前身份。'}}</text>
+      </view>
+      <text class="action-arrow">→</text>
+    </view>
+  </view>
+
+  <view class="section-card" wx:if="{{isLoggedIn}}">
+    <text class="section-title">家族通知与提醒</text>
+
+    <view class="action-item" bindtap="handleFamilyEventSubscription">
+      <view class="action-copy">
+        <text class="action-title">{{familyEventSubscription.fullySubscribed ? '微信提醒已开启' : '开启微信提醒'}}</text>
+        <text class="action-desc" wx:if="{{familyEventLoading}}">正在同步通知状态...</text>
+        <text class="action-desc" wx:elif="{{!familyEventSubscription.enabled}}">
+          站内通知默认可看；管理员尚未配置微信提醒模板。
+        </text>
+        <text class="action-desc" wx:elif="{{!familyEventSubscription.preferredMemberBound && !isAdmin}}">
+          站内通知默认可看；如需微信提醒，请先完成身份绑定。
+        </text>
+        <text class="action-desc" wx:else>
+          站内通知默认可看；这里仅设置微信外部提醒。
+        </text>
+        <text class="action-desc" wx:if="{{familyEventSubscription.enabled}}">{{familyEventSubscription.statusText}}</text>
+        <text class="action-desc" wx:if="{{familyEventSubscription.enabled}}">
+          已授权 {{familyEventSubscription.acceptedTemplateCount}} / {{familyEventSubscription.enabledTemplateCount}} 个提醒模板
+        </text>
+        <text class="action-desc" wx:if="{{familyEventSubscription.enabled && familyEventSubscription.mode === 'one_time'}}">
+          当前为单次提醒模式，消息发送后可能需要再次授权。
+        </text>
+        <block wx:for="{{familyEventSubscription.templates}}" wx:key="templateId">
+          <text class="action-desc">{{item.title || item.key}}：{{item.statusText}}</text>
+        </block>
+      </view>
+      <text class="action-arrow">→</text>
+    </view>
+
+    <view class="action-item" bindtap="goFamilyEventHistory">
+      <view class="action-copy">
+        <text class="action-title">查看站内通知历史</text>
+        <text class="action-desc">管理员发布后，所有成员默认都能在小程序内查看婚丧嫁娶、祭祖聚会等通知。</text>
+      </view>
+      <text class="action-arrow">→</text>
+    </view>
+  </view>
+
+  <view class="section-card">
+    <text class="section-title">家族影像</text>
+
+    <view class="action-item" bindtap="goGalleryUpload">
+      <view class="action-copy">
+        <text class="action-title">上传家族影像</text>
+        <text class="action-desc">{{isAdmin ? '管理员上传后可直接发布到首页。' : '普通成员上传后会进入管理员审核。'}}</text>
+      </view>
+      <text class="action-arrow">→</text>
+    </view>
+
+    <view class="action-item" bindtap="goGalleryManage">
+      <view class="action-copy">
+        <text class="action-title">{{isAdmin ? '影像管理中心' : '我的影像记录'}}</text>
+        <text class="action-desc">{{isAdmin ? '查看待审核影像、已发布内容与我的上传。' : '查看审核状态、驳回原因和已发布内容。'}}</text>
+      </view>
+      <text class="action-arrow">→</text>
+    </view>
+  </view>
+
+  <view class="section-card" wx:if="{{isAdmin}}">
+    <text class="section-title">管理员能力</text>
+
+    <view class="action-item" bindtap="goAudit">
+      <view class="action-copy">
+        <text class="action-title">成员审核中心</text>
+        <text class="action-desc">{{isSuperAdmin ? '处理新增申请、资料审核，并可切换其他用户的管理员权限。' : '处理新增申请、资料审核与身份认领审核。'}}</text>
+      </view>
+      <text class="action-arrow">→</text>
+    </view>
+  </view>
+
+  <view class="section-card">
+    <text class="section-title">账号管理</text>
+    <view class="logout-btn" bindtap="handleAccountAction">
+      <text class="logout-text">{{isLoggedIn ? '退出登录' : '前往登录'}}</text>
+    </view>
+  </view>
+</view>
