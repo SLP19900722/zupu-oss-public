@@ -34,6 +34,25 @@
 - `docs/showcase/05-notification-history.png`
 - `docs/showcase/demo-cover.png`
 
+当前仓库已经放了 6 张可直接显示的占位图。你后面只需要用真实截图覆盖同名文件，README 就会自动替换成正式展示图。
+
+![Community Edition Cover](docs/showcase/demo-cover.png)
+
+![登录页与迁徙时间线](docs/showcase/01-login-timeline.png)
+登录页先展示家族迁徙故事，让用户先理解“家从哪里来”。
+
+![首页影像轮播](docs/showcase/02-home-gallery.png)
+首页承接家族影像与活动内容，不只是成员列表入口。
+
+![家谱树主视图](docs/showcase/03-family-tree.png)
+树谱主视图适合快速浏览代际结构和配偶关系。
+
+![成员详情页](docs/showcase/04-member-detail.png)
+成员详情页可以沉淀职业、住址、简介等长期资料。
+
+![通知历史页](docs/showcase/05-notification-history.png)
+通知历史页用于展示家族活动提醒和历史记录。
+
 截图要点、60 到 90 秒演示视频脚本、README 可直接复用的图片文案模板见 [docs/SHOWCASE.md](docs/SHOWCASE.md)。
 
 ## Project Layout
@@ -44,6 +63,7 @@
 - `backend/src/main/resources/sql/seed_showcase.sql`: 演示库虚构种子数据
 - `docs/SETUP.md`: 本地启动说明
 - `docs/SHOWCASE.md`: 截图与演示视频脚本
+- `docs/RECORDING_SCRIPT.md`: 极简录屏操作稿
 
 ## Quick Start
 
