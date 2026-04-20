@@ -1,0 +1,22 @@
+# Copy this file to application-remote.yml before using the remote profile.
+# The real application-remote.yml is intentionally ignored by Git.
+spring:
+  config:
+    activate:
+      on-profile: remote
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://REMOTE_HOST:3306/family_tree_showcase?useUnicode=true&characterEncoding=utf8&connectionCollation=utf8mb4_general_ci&serverTimezone=Asia/Shanghai&useSSL=false&autoReconnect=true&failOverReadOnly=false
+    username: REMOTE_DB_USERNAME
+    password: REMOTE_DB_PASSWORD
+
+  redis:
+    host: REMOTE_REDIS_HOST
+    port: 6379
+    password: REMOTE_REDIS_PASSWORD
+    database: 0
+
+logging:
+  file:
+    name: logs/family-tree-remote.log

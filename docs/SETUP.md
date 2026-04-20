@@ -2,40 +2,67 @@
 
 ## 1. Import the showcase data
 
-推荐直接使用仓库内的演示 SQL：
+Recommended database name:
 
-1. 使用仓库默认的 `family_tree_showcase`，或自行改成别的库名后同步调整 `DB_URL`
-2. 导入 [schema_showcase.sql](../backend/src/main/resources/sql/schema_showcase.sql)
-3. 再导入 [seed_showcase.sql](../backend/src/main/resources/sql/seed_showcase.sql)
+- `family_tree_showcase`
 
-如果你想复用仓库里的演示库名称，也可以直接使用 `family_tree_showcase`。
+Import the bundled SQL in this order:
+
+1. [schema_showcase.sql](../backend/src/main/resources/sql/schema_showcase.sql)
+2. [seed_showcase.sql](../backend/src/main/resources/sql/seed_showcase.sql)
+
+If you want to use a different database name, update the datasource URL accordingly.
 
 ## 2. Configure backend environment
 
-最少需要这些环境变量：
+At minimum, check these variables:
 
 - `DB_URL`
 - `DB_USERNAME`
 - `DB_PASSWORD`
 - `JWT_SECRET`
 
-示例见 [.env.example](../.env.example)。
+See [../.env.example](../.env.example) for a simple example override file.
 
-默认情况下：
+By default:
 
-- 微信配置使用 `YOUR_*` 占位值
-- 后端会保留当前代码里的测试回退逻辑
-- COS、邮件、订阅消息模板都需要你自己补充
+- WeChat config stays on `YOUR_*` placeholders
+- COS, mail, and subscription templates require your own values
+- the existing codebase keeps its current fallback logic where applicable
 
-## 3. Start the backend
+## 3. Profile split for safe public release
 
-在 `backend` 目录运行：
+The backend now uses a small profile split:
+
+- `application.yml`: shared baseline config and placeholders
+- `application-local.yml`: local showcase defaults, loaded by default
+- `application-remote.yml.example`: copy this to `application-remote.yml` when you want to record against your own remote demo database
+
+The real `application-remote.yml` is intentionally ignored by Git, so your remote host, username, and password stay local.
+
+## 4. Start the backend
+
+Run from `backend/`:
 
 ```powershell
 mvn spring-boot:run
 ```
 
-如果你使用的是打包方式，也可以先执行：
+This command uses the `local` profile by default, so it is the recommended way to record screenshots and videos for the public repository.
+
+If you want to record against a remote demo database instead:
+
+```powershell
+Copy-Item src\main\resources\application-remote.yml.example src\main\resources\application-remote.yml
+```
+
+Edit `application-remote.yml`, then start the backend with:
+
+```powershell
+mvn spring-boot:run -Dspring-boot.run.profiles=remote
+```
+
+If you prefer the packaged jar flow:
 
 ```powershell
 mvn test
@@ -43,32 +70,34 @@ mvn package
 java -jar target/family-tree-backend-1.0.0.jar
 ```
 
-## 4. Open the mini program
+## 5. Open the mini program
 
-1. 用微信开发者工具打开 `miniprogram`
-2. 当前默认环境是 `dev`
-3. 默认后端地址是 `http://127.0.0.1:8080/api`
-4. 当前 `project.config.json` 使用 `touristappid` 占位；如果你要真机调试，请替换成自己的小程序 AppID
+1. Open `miniprogram/` in WeChat DevTools.
+2. The default frontend environment is `dev`.
+3. The default backend URL is `http://127.0.0.1:8080/api`.
+4. `project.config.json` uses `touristappid` as a placeholder. Replace it with your own AppID if you want real-device debugging.
 
-## 5. Scope of the first run
+For remote recording, you can keep the mini program code unchanged and only point the backend process at your remote demo database with the `remote` profile.
 
-社区版首发建议先验证这些页面：
+## 6. Scope of the first run
 
-- 首页
-- 家谱树
-- 成员列表
-- 成员详情
-- 通知历史
-- 迁徙时间线
+Recommended first-pass verification:
 
-这些页面依赖的都是仓库内已经提供的虚构演示数据。
+- home page
+- family tree
+- member list
+- member detail
+- notification history
+- migration timeline
 
-## 6. What is intentionally not bundled
+These pages are already covered by the fictional showcase data in this repository.
 
-以下内容不会在社区版里直接打通：
+## 7. What is intentionally not bundled
 
-- 真实微信登录
-- 真实订阅消息发送
-- COS 上传链路
-- 商业化多租户能力
-- 私有导谱脚本和运维脚本
+The community edition does not directly bundle:
+
+- real WeChat login
+- real subscription delivery
+- COS upload wiring
+- multi-tenant commercial capabilities
+- private genealogy import or operations scripts

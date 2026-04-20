@@ -9,6 +9,7 @@ backend/.idea/
 backend/.trae/
 tmp/
 miniprogram/project.private.config.json
+backend/src/main/resources/application-remote.yml
 .env
 .env.*
 !.env.example

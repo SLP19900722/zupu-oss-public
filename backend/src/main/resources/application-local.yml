@@ -1,0 +1,13 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    url: ${DB_URL:jdbc:mysql://127.0.0.1:3306/family_tree_showcase?useUnicode=true&characterEncoding=utf8&connectionCollation=utf8mb4_general_ci&serverTimezone=Asia/Shanghai&useSSL=false&autoReconnect=true&failOverReadOnly=false}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:change-me}
+
+logging:
+  file:
+    name: ${LOG_FILE_NAME:logs/family-tree-local.log}
