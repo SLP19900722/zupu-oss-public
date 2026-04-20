@@ -28,40 +28,6 @@
 
 ![商务咨询微信二维码](docs/showcase/wechat-contact.png)
 
-## 演示展示
-
-建议在仓库首页展示这几类核心页面：
-
-1. 登录页与迁徙脉络
-2. 首页影像展示
-3. 家族树主视图
-4. 成员详情页
-5. 通知历史页
-
-截图文件建议放在 `docs/showcase/` 目录，使用这些文件名：
-
-- `docs/showcase/demo-cover.png`
-- `docs/showcase/01-login-timeline.png`
-- `docs/showcase/02-home-gallery.png`
-- `docs/showcase/03-family-tree.png`
-- `docs/showcase/04-member-detail.png`
-- `docs/showcase/05-notification-history.png`
-
-如果你把演示视频上传到 GitHub Releases，建议统一文件名：
-
-- `family-tree-community-demo.mp4`
-
-把下面这两个占位链接替换成你自己的 Release 附件地址即可：
-
-```md
-[![观看演示视频](docs/showcase/demo-cover.png)](https://github.com/<你的用户名>/<你的仓库>/releases/download/v0.1.0/family-tree-community-demo.mp4)
-
-演示视频：[点击观看 90 秒演示](https://github.com/<你的用户名>/<你的仓库>/releases/download/v0.1.0/family-tree-community-demo.mp4)
-```
-
-[![观看演示视频](docs/showcase/demo-cover.png)](https://github.com/<你的用户名>/<你的仓库>/releases/download/v0.1.0/family-tree-community-demo.mp4)
-
-演示视频：[点击观看 90 秒演示](https://github.com/<你的用户名>/<你的仓库>/releases/download/v0.1.0/family-tree-community-demo.mp4)
 
 ![社区版封面](docs/showcase/demo-cover.png)
 
@@ -113,39 +79,7 @@
 
 详细步骤见 [docs/SETUP.md](docs/SETUP.md)。
 
-## 运行方式
 
-为了兼顾公开安全和本地演示，仓库区分了两类配置：
-
-- `backend/src/main/resources/application.yml`：公共基线配置
-- `backend/src/main/resources/application-local.yml`：本地演示默认配置
-- `backend/src/main/resources/application-remote.yml.example`：远程演示配置模板
-
-### 本地演示
-
-适合本地截图、录屏和 GitHub 展示：
-
-```powershell
-cd backend
-mvn spring-boot:run
-```
-
-### 远程演示
-
-如果你希望代码保持公开仓库默认状态，但后端连接到你自己的远程演示库：
-
-```powershell
-cd backend
-Copy-Item src\main\resources\application-remote.yml.example src\main\resources\application-remote.yml
-```
-
-补充好本地私有配置后，再执行：
-
-```powershell
-mvn spring-boot:run -Dspring-boot.run.profiles=remote
-```
-
-`application-remote.yml` 已被 Git 忽略，不会进入公开仓库。
 
 ## 社区版边界
 
