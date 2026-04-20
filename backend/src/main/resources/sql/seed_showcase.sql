@@ -1331,4 +1331,10 @@ INSERT INTO `family_tree_relations` (`id`, `member_id`, `ancestor_id`, `generati
   (1047, 132, 2, 11, 'paternal', '2026-04-16 10:00:00'),
   (1048, 132, 1, 12, 'paternal', '2026-04-16 10:00:00');
 
+UPDATE family_member
+SET
+  name = CASE WHEN name LIKE '沈%' THEN SUBSTRING(name, 2) ELSE name END,
+  spouse_name = CASE WHEN spouse_name LIKE '沈%' THEN SUBSTRING(spouse_name, 2) ELSE spouse_name END,
+  mother_name = CASE WHEN mother_name LIKE '沈%' THEN SUBSTRING(mother_name, 2) ELSE mother_name END;
+
 SET FOREIGN_KEY_CHECKS = 1;

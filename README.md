@@ -68,6 +68,17 @@ The member detail page supports richer profile data such as occupation, address,
 ![Notification History Page](docs/showcase/05-notification-history.png)
 The notification history page shows family reminders and activity records.
 
+### Additional Screens
+
+![First Login Identity Selection](docs/showcase/06-select-self.png)
+The first login flow helps a newcomer choose "who am I" before binding to the family tree.
+
+![Member Directory Overview](docs/showcase/07-member-directory-overview.png)
+The member directory overview gives a clean searchable entry point into the showcase dataset.
+
+![Member Directory List](docs/showcase/08-member-directory-list.png)
+The scrolling member list makes the generation, occupation, and current city easy to scan in one pass.
+
 For the full screenshot checklist and a short recording script, see [docs/SHOWCASE.md](docs/SHOWCASE.md).
 
 ## Project Layout

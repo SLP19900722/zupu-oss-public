@@ -181,7 +181,7 @@ Page({
     entranceLines: [
       '你虽然没有马云有钱',
       '也没有特朗普有权',
-      '但他们都入不了孙氏族谱，而你能！'
+      '但他们都入不了沈氏族谱，而你能！'
     ],
     galleryImages: [],
     galleryCurrent: 0,

@@ -13,13 +13,13 @@
         <view class="seal-ring seal-ring-outer"></view>
         <view class="seal-ring seal-ring-inner"></view>
         <view class="seal-face">
-          <text class="seal-text">孙</text>
+          <text class="seal-text">沈</text>
         </view>
       </view>
 
       <view class="title-row">
-        <text class="page-title">孙氏族谱</text>
-        <view class="latin-badge">SUN</view>
+        <text class="page-title">沈氏族谱</text>
+        <view class="latin-badge">SHEN</view>
       </view>
 
       <text class="page-subtitle">寻根问祖，承先启后，续写家风与家史</text>

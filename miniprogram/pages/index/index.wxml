@@ -4,7 +4,7 @@
     <view class="entrance-rays"></view>
 
     <view class="entrance-content entrance-step-{{entranceStep}}">
-      <view class="entrance-badge">孙氏族谱 · 入场提示</view>
+      <view class="entrance-badge">沈氏族谱 · 入场提示</view>
       <text class="entrance-line">{{entranceLines[entranceStep]}}</text>
       <text class="entrance-subline">入谱资格已核验，正在点亮你的宗族主角位</text>
     </view>
@@ -23,13 +23,13 @@
         <view class="seal-ring seal-ring-outer"></view>
         <view class="seal-ring seal-ring-inner"></view>
         <view class="seal-face">
-          <text class="seal-text">孙</text>
+          <text class="seal-text">沈</text>
         </view>
       </view>
 
       <view class="hero-title-row">
-        <text class="hero-title">孙氏族谱</text>
-        <text class="hero-badge">SUN</text>
+        <text class="hero-title">沈氏族谱</text>
+        <text class="hero-badge">SHEN</text>
       </view>
 
       <text class="hero-subtitle">修身立德，传承家风，续写家史与家族影像</text>
