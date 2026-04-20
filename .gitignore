@@ -2,6 +2,11 @@ backend/target/
 backend/logs/
 backend/spring-boot-run.log
 backend/mvn_package*.txt
+backend/compile.log
+backend/package.log
+backend/mvn_error.txt
+backend/.idea/
+backend/.trae/
 tmp/
 miniprogram/project.private.config.json
 .env
